@@ -14,7 +14,7 @@ namespace PersonalDiary.DAL.DataSeed
             builder.Entity<User>().HasData(
                 new User()
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     Nickname = "admin",
                     Email = "tester@gmail.com",
                     Password = "Password_1",

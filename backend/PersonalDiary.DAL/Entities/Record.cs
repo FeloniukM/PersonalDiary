@@ -11,6 +11,6 @@ namespace PersonalDiary.DAL.Entities
         public string Text { get; set; } = null!;
 
         public User Author { get; set; } = null!;
-        public int AuthorId { get; set; }
+        public Guid AuthorId { get; set; }
     }
 }
