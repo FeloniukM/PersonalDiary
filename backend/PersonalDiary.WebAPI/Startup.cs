@@ -1,4 +1,5 @@
 ﻿using PersonalDiary.BLL;
+using PersonalDiary.WebAPI.Extensions;
 
 namespace PersonalDiary.WebAPI
 {
@@ -15,7 +16,10 @@ namespace PersonalDiary.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddAuthorization();
             services.AddCustomService(Configuration);
+            services.ConfigureJwt(Configuration);
+            services.AddAutoMapper();
             services.AddCors();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
@@ -33,6 +37,8 @@ namespace PersonalDiary.WebAPI
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseCors(x =>
             {
