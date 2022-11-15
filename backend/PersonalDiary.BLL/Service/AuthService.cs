@@ -31,7 +31,9 @@ namespace PersonalDiary.BLL.Service
 
         public async Task<AuthUserDTO> Authorize(UserLoginDTO userDto)
         {
-            var userEntity = await _userRepository.GetByKeyAsync(userDto.Email);
+            var userEntity = await _userRepository.Query()
+                .Where(x => x.Email == userDto.Email)
+                .FirstOrDefaultAsync();
 
             if (userEntity == null)
             {

@@ -35,7 +35,7 @@ namespace PersonalDiary.WebAPI.Controllers
                 Token = token
             };
 
-            return CreatedAtAction("GetById", "users", new { id = createdUser.Id }, result);
+            return Ok(result);
         }
     }
 }

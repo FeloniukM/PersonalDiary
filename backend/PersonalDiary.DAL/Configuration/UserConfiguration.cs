@@ -18,7 +18,6 @@ namespace PersonalDiary.DAL.Configuration
 
             builder
                 .Property(x => x.Password)
-                .HasMaxLength(30)
                 .IsRequired();
 
             builder

@@ -28,26 +28,27 @@ namespace PersonalDiary.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+            app.UseCors(builder =>
+                builder
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod());
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
             app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors(x =>
+            app.UseEndpoints(endpoints =>
             {
-                x.AllowAnyHeader();
-                x.AllowAnyOrigin();
-                x.AllowAnyMethod();
+                endpoints.MapControllers();
             });
-
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

@@ -22,6 +22,7 @@ namespace PersonalDiary.DAL.DataSeed
                     UpdatedAt = DateTime.UtcNow,
                     IsAdmin = true,
                     IsDelete = false,
+                    Salt = "D;%yL9TS:5PalS/d",
                     Records = null
                 });
     }

@@ -23,6 +23,7 @@ namespace PersonalDiary.BLL.Service
             var userEntity = _mapper.Map<User>(userDto);
             var salt = SecurityHelper.GetRandomBytes();
 
+            userEntity.Id = Guid.NewGuid();
             userEntity.Salt = Convert.ToBase64String(salt);
             userEntity.Password = SecurityHelper.HashPassword(userDto.Password, salt);
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonalDiary.DAL.DataAccess;
 
@@ -11,9 +12,10 @@ using PersonalDiary.DAL.DataAccess;
 namespace PersonalDiary.DAL.Migrations
 {
     [DbContext(typeof(PersonalDiaryDbContext))]
-    partial class PersonalDiaryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221115071836_token")]
+    partial class token
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,7 +111,8 @@ namespace PersonalDiary.DAL.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Salt")
                         .IsRequired()
@@ -125,15 +128,15 @@ namespace PersonalDiary.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("21490871-8130-4515-b730-0b8ffd7f9c4b"),
-                            CreatedAt = new DateTime(2022, 11, 15, 7, 41, 39, 762, DateTimeKind.Utc).AddTicks(9927),
+                            Id = new Guid("a9ca04ae-9f03-479d-900d-365326f42c66"),
+                            CreatedAt = new DateTime(2022, 11, 15, 7, 18, 36, 473, DateTimeKind.Utc).AddTicks(7152),
                             Email = "tester@gmail.com",
                             IsAdmin = true,
                             IsDelete = false,
                             Nickname = "admin",
                             Password = "Password_1",
                             Salt = "D;%yL9TS:5PalS/d",
-                            UpdatedAt = new DateTime(2022, 11, 15, 7, 41, 39, 762, DateTimeKind.Utc).AddTicks(9928)
+                            UpdatedAt = new DateTime(2022, 11, 15, 7, 18, 36, 473, DateTimeKind.Utc).AddTicks(7156)
                         });
                 });
 
