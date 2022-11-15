@@ -1,0 +1,19 @@
+<div class="back">
+  <form class="login-form" [formGroup]="registerForm" novalidate (ngSubmit)="signUp()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nickname</mat-label>
+      <input type="text" matInput placeholder="Nickname" #nickname maxlength=30 formControlName="nameControl" required>
+      <mat-error *ngIf="registerForm.controls['nameControl'].invalid && registerForm.controls['nameControl'].touched">Invalid email</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput placeholder="Your email" #email maxlength=50 formControlName="emailControl" required>
+      <mat-error *ngIf="registerForm.controls['emailControl'].invalid && registerForm.controls['emailControl'].touched">Invalid email</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput  #password maxlength=50 formControlName="passwordControl" required>
+    </mat-form-field>
+    <button mat-raised-button color="accent">SignUp</button>
+  </form>
+</div>

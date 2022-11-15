@@ -48,7 +48,7 @@ export class AuthenticationService {
     }
 
     public register(user: UserRegisterModel) {
-        return this._handleAuthResponse(this.httpService.postFullRequest<AuthUser>(`${this.routePrefix}/register`, user));
+        return this._handleAuthResponse(this.httpService.postFullRequest<AuthUser>(`${this.routePrefix}/auth/register`, user));
     }
 
     public login(user: UserLoginModel) {

@@ -14,16 +14,16 @@ export class HttpInternalService {
         return this.headers;
     }
 
-    public getHeader(key: string): string {
-        return this.headers[key];
+    public getHeader(key: string): string | null {
+        return this.headers.get(key);
     }
 
     public setHeader(key: string, value: string): void {
-        this.headers[key] = value;
+        this.headers.set(key, value);
     }
 
     public deleteHeader(key: string): void {
-        delete this.headers[key];
+        this.headers.delete(key);
     }
 
     public getRequest<T>(url: string, httpParams?: any): Observable<T> {
