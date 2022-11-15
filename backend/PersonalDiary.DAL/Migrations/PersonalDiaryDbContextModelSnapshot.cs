@@ -53,6 +53,35 @@ namespace PersonalDiary.DAL.Migrations
                     b.ToTable("Records");
                 });
 
+            modelBuilder.Entity("PersonalDiary.DAL.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("PersonalDiary.DAL.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -80,8 +109,11 @@ namespace PersonalDiary.DAL.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Salt")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -93,14 +125,15 @@ namespace PersonalDiary.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c4d3ded5-2597-4fec-9ba0-40a1f99f778a"),
-                            CreatedAt = new DateTime(2022, 11, 14, 19, 30, 58, 266, DateTimeKind.Utc).AddTicks(7084),
+                            Id = new Guid("21490871-8130-4515-b730-0b8ffd7f9c4b"),
+                            CreatedAt = new DateTime(2022, 11, 15, 7, 41, 39, 762, DateTimeKind.Utc).AddTicks(9927),
                             Email = "tester@gmail.com",
                             IsAdmin = true,
                             IsDelete = false,
                             Nickname = "admin",
                             Password = "Password_1",
-                            UpdatedAt = new DateTime(2022, 11, 14, 19, 30, 58, 266, DateTimeKind.Utc).AddTicks(7085)
+                            Salt = "D;%yL9TS:5PalS/d",
+                            UpdatedAt = new DateTime(2022, 11, 15, 7, 41, 39, 762, DateTimeKind.Utc).AddTicks(9928)
                         });
                 });
 
@@ -113,6 +146,17 @@ namespace PersonalDiary.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("PersonalDiary.DAL.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("PersonalDiary.DAL.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PersonalDiary.DAL.Entities.User", b =>
