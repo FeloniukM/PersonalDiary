@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RegisterComponent } from './components/register/register.component';
 import { ThreadComponent } from './components/thread/thread.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AuthComponent } from './components/auth/auth.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     LoginComponent,
     RegisterComponent,
     ThreadComponent,
-    ProfileComponent
+    ProfileComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +30,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     BrowserAnimationsModule,
     MaterialComponentsModule,
     HttpClientModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
