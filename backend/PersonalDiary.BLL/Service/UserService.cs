@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.User;
+using PersonalDiary.Common.Email;
 using PersonalDiary.Common.Security;
 using PersonalDiary.DAL.Entities;
 using PersonalDiary.DAL.Interfaces;
@@ -11,11 +12,13 @@ namespace PersonalDiary.BLL.Service
     {
         private readonly IMapper _mapper;
         private readonly IRepository<User> _userRepository;
+        private readonly IEmailService _emailService;
 
-        public UserService(IRepository<User> userRepository, IMapper mapper)
+        public UserService(IRepository<User> userRepository, IMapper mapper, IEmailService emailService)
         {
             _mapper = mapper;
             _userRepository = userRepository;
+            _emailService = emailService;
         }
 
         public async Task<UserDTO> CreateUser(UserRegisterDTO userDto)
@@ -31,6 +34,18 @@ namespace PersonalDiary.BLL.Service
             await _userRepository.SaveChangesAsync();
 
             return _mapper.Map<UserDTO>(userEntity);
+        }
+
+        public async Task InviteUser(UserInviteDTO userInviteDTO)
+        {
+            var request = new MailRequest()
+            {
+                ToEmail = userInviteDTO.Email,
+                Subject = "Welcom to our service - \"PersonalDiary\"",
+                Body = "http://localhost:4200/register"
+            };
+
+            await _emailService.SendEmailAsync(request, null);
         }
     }
 }

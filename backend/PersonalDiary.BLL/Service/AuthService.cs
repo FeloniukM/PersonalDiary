@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using PersonalDiary.BLL.Exeptions;
 using PersonalDiary.BLL.Interfaces;
-using PersonalDiary.BLL.JWT;
 using PersonalDiary.Common.DTO.Auth;
 using PersonalDiary.Common.DTO.User;
 using PersonalDiary.Common.Security;

@@ -7,7 +7,7 @@ import { UserRegisterModel } from '../models/auth/user-register-model';
 import { AuthUser } from '../models/auth/auth-user';
 import { UserLoginModel } from '../models/auth/user-login-model';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { User } from '../models/user';
+import { UserModel } from '../models/user/user-model';
 import { UserService } from './user.service';
 import { EventService } from './event.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -15,7 +15,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     public routePrefix = '/api';
-    private user: User;
+    private user: UserModel;
     private jwtHelperService = new JwtHelperService();
 
     private isAuthenticationSub = new BehaviorSubject<boolean>(false);
@@ -27,22 +27,7 @@ export class AuthenticationService {
         this.isAuthenticationSub.next(isAuthentication);
     }
 
-    public getUser() {
-        return this.user
-            ? of(this.user)
-            : this.userService.getUserFromToken().pipe(
-                map((resp) => {
-                    if(resp.body) {
-                        this.user = resp.body;
-                        this.eventService.userChanged(this.user);
-                        return this.user;
-                    }
-                    return null;
-                })
-            );
-    }
-
-    public setUser(user: User) {
+    public setUser(user: UserModel) {
         this.user = user;
         this.eventService.userChanged(user);
     }
@@ -116,7 +101,6 @@ export class AuthenticationService {
         if (tokens && tokens.accessToken && tokens.refreshToken) {
             localStorage.setItem('accessToken', JSON.stringify(tokens.accessToken.token));
             localStorage.setItem('refreshToken', JSON.stringify(tokens.refreshToken));
-            this.getUser();
         }
     }
 }
