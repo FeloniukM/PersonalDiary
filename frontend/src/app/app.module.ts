@@ -9,12 +9,16 @@ import { MaterialComponentsModule } from './components/common/material-component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RegisterComponent } from './components/register/register.component';
+import { ThreadComponent } from './components/thread/thread.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ThreadComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

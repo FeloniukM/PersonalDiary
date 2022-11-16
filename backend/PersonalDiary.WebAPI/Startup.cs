@@ -1,4 +1,5 @@
 ﻿using PersonalDiary.BLL;
+using PersonalDiary.Common.Email;
 using PersonalDiary.WebAPI.Extensions;
 
 namespace PersonalDiary.WebAPI
@@ -18,6 +19,7 @@ namespace PersonalDiary.WebAPI
             services.AddControllers();
             services.AddAuthorization();
             services.AddCustomService(Configuration);
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.ConfigureJwt(Configuration);
             services.AddAutoMapper();
             services.AddCors();

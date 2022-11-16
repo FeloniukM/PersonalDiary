@@ -5,5 +5,6 @@ namespace PersonalDiary.BLL.Interfaces
     public interface IUserService
     {
         Task<UserDTO> CreateUser(UserRegisterDTO userDto);
+        Task InviteUser(UserInviteDTO userInviteDTO);
     }
 }

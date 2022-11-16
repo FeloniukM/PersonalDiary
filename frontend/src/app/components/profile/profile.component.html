@@ -1,0 +1,15 @@
+<div class="container">
+  <div>
+    
+  </div>
+  <div>
+    <form [formGroup]="inviteFormGroup" novalidate (ngSubmit)="invite()">
+      <mat-form-field appearance="fill">
+        <mat-label>Invite another user to this service</mat-label>
+        <input type="email" matInput placeholder="Email to invite" #email maxlength=50 formControlName="inviteEmailControl" required>
+        <mat-error *ngIf="inviteFormGroup.controls['inviteEmailControl'].invalid && inviteFormGroup.controls['inviteEmailControl'].touched">Invalid email</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="accent">Invite</button>
+    </form>
+  </div>
+</div>

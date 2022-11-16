@@ -1,7 +1,7 @@
 import { AccessTokenModel } from "../token/access-token-model";
-import { User } from "../user";
+import { UserModel } from "../user/user-model";
 
 export interface AuthUser {
-    user: User;
+    user: UserModel;
     token: AccessTokenModel;
 }
