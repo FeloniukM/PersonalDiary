@@ -1,14 +1,25 @@
-<div class="back">
-  <form class="login-form" [formGroup]="loginForm" novalidate (ngSubmit)="signIn()">
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input type="email" matInput placeholder="Your email" #email maxlength=50 formControlName="emailControl" required>
-      <mat-error *ngIf="loginForm.controls['emailControl'].invalid && loginForm.controls['emailControl'].touched">Invalid email</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input type="password" matInput  #password maxlength=50 formControlName="passwordControl" required>
-    </mat-form-field>
-    <button mat-raised-button color="accent">SignIn</button>
+<div class="container">
+  <div>
+    <h1 class="title">PerosonalDiary</h1>
+  </div>
+  <form [formGroup]="loginForm" class="form-container" (ngSubmit)="signIn()">
+    <div class="text-container">
+      <h4 class="login-title">Log In</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput placeholder="Your email" #email maxlength=50 formControlName="emailControl" required>
+        <mat-error *ngIf="loginForm.controls['emailControl'].invalid && loginForm.controls['emailControl'].touched">Invalid email</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="password-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput  #password maxlength=50 formControlName="passwordControl" required>
+      </mat-form-field>
+    </div>
+    <div class="button-container">
+      <button mat-raised-button color="accent">Sign In</button>
+    </div>
   </form>
 </div>
+
