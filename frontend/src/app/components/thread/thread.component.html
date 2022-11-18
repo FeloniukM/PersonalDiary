@@ -3,6 +3,16 @@
     <button (click)="openProfile()">profile</button>
   </div>
   <div class="content">
-    <p>body</p>
+    <div class="input">
+      <form class="form-input" [formGroup]="recordForm" (ngSubmit)="addRecord()">
+        <input type="text" class="title-input" formControlName="titleControl"/>
+        <textarea class="content-input" formControlName="textControl"></textarea>
+        <input type="file" (change)="handleFileSelect($event)">
+        <button>send</button>
+      </form>
+    </div>
+    <div class="records" *ngFor="let record of records">
+      <app-record [record]="record"></app-record>
+    </div>
   </div>
 </div>

@@ -29,6 +29,7 @@ namespace PersonalDiary.BLL.Service
             userEntity.Id = Guid.NewGuid();
             userEntity.Salt = Convert.ToBase64String(salt);
             userEntity.Password = SecurityHelper.HashPassword(userDto.Password, salt);
+            userEntity.CreatedAt = userEntity.UpdatedAt = DateTime.UtcNow;
 
             await _userRepository.AddAsync(userEntity);
             await _userRepository.SaveChangesAsync();
@@ -42,7 +43,7 @@ namespace PersonalDiary.BLL.Service
             {
                 ToEmail = userInviteDTO.Email,
                 Subject = "Welcom to our service - \"PersonalDiary\"",
-                Body = "http://localhost:4200/register"
+                Body = "http://localhost:4200/auth/register"
             };
 
             await _emailService.SendEmailAsync(request, null);

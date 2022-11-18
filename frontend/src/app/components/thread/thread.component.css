@@ -5,3 +5,26 @@
     padding: 10px;
     height: 100%
 }
+
+.input {
+    padding: 40px 5px 0px 0px;
+    width: 40%;
+}
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+}
+
+.title-input {
+    margin-bottom: 10px;
+    width: 50%;
+}
+
+.content-input {
+    margin-bottom: 10px;
+}
+
+.file-input {
+    margin-bottom: 10px;
+}
