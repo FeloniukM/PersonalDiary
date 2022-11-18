@@ -1,8 +1,6 @@
-﻿using PersonalDiary.DAL.Interfaces;
-
-namespace PersonalDiary.DAL.Entities
+﻿namespace PersonalDiary.Common.DTO.Record
 {
-    public class Record : IBaseEntity
+    public class RecordInfoDTO
     {
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -10,8 +8,5 @@ namespace PersonalDiary.DAL.Entities
         public string Title { get; set; } = null!;
         public string Text { get; set; } = null!;
         public string? ImageBase64 { get; set; }
-
-        public User Author { get; set; } = null!;
-        public Guid AuthorId { get; set; }
     }
 }

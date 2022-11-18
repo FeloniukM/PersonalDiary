@@ -7,11 +7,13 @@ import { LoginComponent } from './components/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialComponentsModule } from './components/common/material-components.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegisterComponent } from './components/register/register.component';
 import { ThreadComponent } from './components/thread/thread.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthComponent } from './components/auth/auth.component';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { RecordComponent } from './components/record/record.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { AuthComponent } from './components/auth/auth.component';
     RegisterComponent,
     ThreadComponent,
     ProfileComponent,
-    AuthComponent
+    AuthComponent,
+    RecordComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,9 @@ import { AuthComponent } from './components/auth/auth.component';
     HttpClientModule,
     
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,27 +8,24 @@ import { AuthUser } from '../models/auth/auth-user';
 import { UserLoginModel } from '../models/auth/user-login-model';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { UserModel } from '../models/user/user-model';
-import { UserService } from './user.service';
 import { EventService } from './event.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     public routePrefix = '/api';
-    private user: UserModel;
     private jwtHelperService = new JwtHelperService();
 
     private isAuthenticationSub = new BehaviorSubject<boolean>(false);
     public isAuthentication = this.isAuthenticationSub.asObservable();
 
-    constructor(private httpService: HttpInternalService, private userService: UserService, private eventService: EventService) { }
+    constructor(private httpService: HttpInternalService, private eventService: EventService) { }
 
     public nextisAuthentication(isAuthentication: boolean): void {
         this.isAuthenticationSub.next(isAuthentication);
     }
 
     public setUser(user: UserModel) {
-        this.user = user;
         this.eventService.userChanged(user);
     }
 
@@ -87,8 +84,8 @@ export class AuthenticationService {
         return observable.pipe(
             map((resp) => {
                 if(resp.body) {
+                    console.log(resp);
                     this._setTokens(resp.body.token);
-                    this.user = resp.body.user;
                     this.eventService.userChanged(resp.body.user);
                     return resp.body.user;
                 }

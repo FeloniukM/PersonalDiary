@@ -12,9 +12,9 @@ namespace PersonalDiary.DAL.Configuration
                 .HasKey(x => x.Id);
 
             builder
-                .HasOne(x => x.Author)
-                .WithMany(x => x.Records)
-                .HasForeignKey(x => x.AuthorId);
+                .HasOne(r => r.Author)
+                .WithMany(u => u.Records)
+                .HasForeignKey(r => r.AuthorId);
 
             builder.Property(x => x.Title)
                 .IsRequired();

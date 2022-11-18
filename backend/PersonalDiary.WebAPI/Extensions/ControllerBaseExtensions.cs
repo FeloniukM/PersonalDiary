@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonalDiary.BLL.Exeptions;
+using System.Security.Claims;
 
 namespace PersonalDiary.WebAPI.Extensions
 {
@@ -7,7 +8,7 @@ namespace PersonalDiary.WebAPI.Extensions
     {
         public static Guid GetUserIdFromToken(this ControllerBase controller)
         {
-            var claimsUserId = controller.User.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
+            var claimsUserId = controller.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(claimsUserId))
             {

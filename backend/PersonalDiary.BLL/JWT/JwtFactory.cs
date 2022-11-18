@@ -26,15 +26,13 @@ namespace PersonalDiary.BLL.JWT
 
         public async Task<AccessToken> GenerateAccessToken(Guid id, string nickname, string email)
         {
-            var identity = GenerateClaimsIdentity(id, nickname);
-
             var claims = new[]
             {
-                 new Claim(JwtRegisteredClaimNames.Sub, nickname),
-                 new Claim(JwtRegisteredClaimNames.Email, email),
-                 new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
-                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                 identity.FindFirst("id")
+                new Claim(ClaimTypes.Name, nickname),
+                new Claim(ClaimTypes.NameIdentifier, id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, email),
+                new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
+                new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
              };
 
             var jwt = new JwtSecurityToken(
@@ -94,14 +92,6 @@ namespace PersonalDiary.BLL.JWT
             {
                 return null;
             }
-        }
-
-        private static ClaimsIdentity GenerateClaimsIdentity(Guid id, string nickname)
-        {
-            return new ClaimsIdentity(new GenericIdentity(nickname, "Token"), new[]
-            {
-                new Claim("id", id.ToString())
-            });
         }
 
         private static long ToUnixEpochDate(DateTime date)
