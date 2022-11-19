@@ -7,6 +7,7 @@ using PersonalDiary.Common.DTO.User;
 using PersonalDiary.Common.Security;
 using PersonalDiary.DAL.Entities;
 using PersonalDiary.DAL.Interfaces;
+using PersonalDiary.DAL.Migrations;
 
 namespace PersonalDiary.BLL.Service
 {
@@ -36,12 +37,12 @@ namespace PersonalDiary.BLL.Service
 
             if (userEntity == null)
             {
-                throw new Exception();
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "User was not found");
             }
 
             if (!SecurityHelper.ValidatePassword(userDto.Password, userEntity.Password, userEntity.Salt))
             {
-                throw new Exception();
+                throw new HttpException(System.Net.HttpStatusCode.BadRequest, "Password not valid");
             }
 
             var token = await GenerateAccessToken(userEntity.Id, userEntity.Nickname, userEntity.Email);
@@ -78,7 +79,7 @@ namespace PersonalDiary.BLL.Service
 
             if (userEntity == null)
             {
-                throw new Exception();
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "User was not found");
             }
 
             var rToken = await _refreshTokenRepository
@@ -87,12 +88,12 @@ namespace PersonalDiary.BLL.Service
 
             if (rToken == null)
             {
-                throw new InvalidTokenException("refresh");
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Refresh token not exist");
             }
 
             if (!rToken.IsActive)
             {
-                throw new Exception();
+                throw new HttpException(System.Net.HttpStatusCode.BadRequest, "Token has expired");
             }
 
             var jwtToken = await _jwtFactory.GenerateAccessToken(userEntity.Id, userEntity.Nickname, userEntity.Email);
@@ -118,7 +119,7 @@ namespace PersonalDiary.BLL.Service
 
             if (rToken == null)
             {
-                throw new InvalidTokenException("refresh");
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Refresh token not exist");
             }
 
             await _refreshTokenRepository.DeleteAsync(rToken);

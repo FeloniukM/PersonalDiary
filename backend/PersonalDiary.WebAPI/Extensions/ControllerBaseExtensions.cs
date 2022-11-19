@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PersonalDiary.BLL.Exeptions;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 
 namespace PersonalDiary.WebAPI.Extensions
@@ -12,7 +12,7 @@ namespace PersonalDiary.WebAPI.Extensions
 
             if (string.IsNullOrEmpty(claimsUserId))
             {
-                throw new InvalidTokenException("access");
+                throw new SecurityTokenException("Invalid token");
             }
 
             return Guid.Parse(claimsUserId);

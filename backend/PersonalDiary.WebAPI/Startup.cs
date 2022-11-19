@@ -22,6 +22,7 @@ namespace PersonalDiary.WebAPI
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.ConfigureJwt(Configuration);
             services.AddAutoMapper();
+            services.AddFluentValidation();
             services.AddCors();
             services.AddEndpointsApiExplorer();
             services.AddSwagger();

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PersonalDiary.BLL.Exeptions;
 using PersonalDiary.BLL.Helpers;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.Record;
@@ -90,7 +91,7 @@ namespace PersonalDiary.BLL.Service
 
             if(record.CreatedAt < DateTime.Now.AddDays(-2))
             {
-                throw new Exception();
+                throw new HttpException(System.Net.HttpStatusCode.BadRequest, "A user cannot delete a record after two days of creation");
             }
 
             await _recordRepository.DeleteAsync(record);
@@ -105,7 +106,9 @@ namespace PersonalDiary.BLL.Service
                 .FirstOrDefaultAsync();
 
             if (record == null)
-                throw new Exception();
+            {
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Record was not found");
+            }
 
             _mapper.Map(recordDTO, record);
             record.UpdatedAt = DateTime.UtcNow;
