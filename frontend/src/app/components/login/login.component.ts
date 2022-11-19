@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(() => {
           this.authService.nextisAuthentication(true);
-          this.router.navigate(['main']);
+          this.router.navigate(['thread']);
         });
     }
   }

@@ -1,17 +1,17 @@
-<div class="container">
-  <div class="header">
-    <button (click)="openProfile()">profile</button>
-  </div>
-  <div class="content">
-    <div class="input">
-      <form class="form-input" [formGroup]="recordForm" (ngSubmit)="addRecord()">
-        <input type="text" class="title-input" formControlName="titleControl"/>
-        <textarea class="content-input" formControlName="textControl"></textarea>
-        <input type="file" (change)="handleFileSelect($event)">
-        <button>send</button>
-      </form>
+<div class="content">
+  <form class="form-input" [formGroup]="recordForm" (ngSubmit)="addRecord()">
+    <input type="text" class="title-input" formControlName="titleControl" placeholder="Title your's record"/>
+    <textarea class="content-input" formControlName="textControl" placeholder="Here can be our record"></textarea>
+    <div class="input-tool">
+      <label class="custom-file-upload">
+        <input type="file"/>
+        <i class="fa fa-cloud-upload"></i> Attach file
+      </label>
+      <i class="fa-regular fa-paper-plane fa-xl" (click)="addRecord()"></i>
     </div>
-    <div class="records" *ngFor="let record of records">
+  </form>
+  <div class="records" >
+    <div *ngFor="let record of records">
       <app-record [record]="record"></app-record>
     </div>
   </div>

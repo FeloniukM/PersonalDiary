@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.User;
 using PersonalDiary.Common.Email;
@@ -37,8 +38,15 @@ namespace PersonalDiary.BLL.Service
             return _mapper.Map<UserDTO>(userEntity);
         }
 
-        public async Task InviteUser(UserInviteDTO userInviteDTO)
+        public async Task InviteUser(UserEmailDTO userInviteDTO, Guid adminId)
         {
+            var user = await _userRepository.GetByKeyAsync(adminId);
+
+            if (user != null && user.IsAdmin == true)
+            {
+                throw new Exception();
+            }
+
             var request = new MailRequest()
             {
                 ToEmail = userInviteDTO.Email,
@@ -47,6 +55,43 @@ namespace PersonalDiary.BLL.Service
             };
 
             await _emailService.SendEmailAsync(request, null);
+        }
+
+        public async Task<UserInfoDTO> GetUserInfo(Guid userId)
+        {
+            var user = await _userRepository.GetByKeyAsync(userId);
+
+            if(user == null)
+            {
+                throw new Exception();
+            }
+
+            return _mapper.Map<UserInfoDTO>(user);
+        }
+
+        public async Task ChangeUserRole(UserEmailDTO userInviteDTO, Guid adminId)
+        {
+            var admin = await _userRepository.GetByKeyAsync(adminId);
+
+            if (admin == null || admin.IsAdmin == false) 
+            { 
+                throw new Exception();
+            }
+
+            var user = await _userRepository
+                .Query()
+                .Where(x => x.Email == userInviteDTO.Email)
+                .FirstOrDefaultAsync();
+
+            if(user == null)
+            {
+                throw new Exception();
+            }
+
+            user.IsAdmin = true;
+
+            await _userRepository.UpdateAsync(user);
+            await _userRepository.SaveChangesAsync();
         }
     }
 }

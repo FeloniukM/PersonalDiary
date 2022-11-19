@@ -1,15 +1,30 @@
 <div class="container">
   <div>
-    
+    <label class="back" (click)="turnBack()">turn back</label>
   </div>
-  <div>
-    <form [formGroup]="inviteFormGroup" novalidate (ngSubmit)="invite()">
-      <mat-form-field appearance="fill">
-        <mat-label>Invite another user to this service</mat-label>
-        <input type="email" matInput placeholder="Email to invite" #email maxlength=50 formControlName="inviteEmailControl" required>
-        <mat-error *ngIf="inviteFormGroup.controls['inviteEmailControl'].invalid && inviteFormGroup.controls['inviteEmailControl'].touched">Invalid email</mat-error>
-      </mat-form-field>
-      <button mat-raised-button color="accent">Invite</button>
-    </form>
+  <div class="profile">
+    <div *ngIf="userInfoModel && userInfoModel.isAdmin">
+      <form class="invite-form" [formGroup]="inviteFormGroup" novalidate (ngSubmit)="invite()">
+        <div class="invite">
+          <label class="label">Request by email:</label>
+          <input class="email-input" type="email" formControlName="inviteEmailControl">
+        </div>
+        <i class="send-icon fa-regular fa-paper-plane fa-xl" (click)="invite()"></i>
+      </form>
+      <div>
+        <form class="invite-form" [formGroup]="changeFormGroup" novalidate (ngSubmit)="changeRole()">
+          <div class="invite">
+            <label class="label">Change role by email:</label>
+            <input class="email-input" type="email" formControlName="changeEmailControl">
+          </div>
+          <i class="send-icon fa-regular fa-paper-plane fa-xl" (click)="changeRole()"></i>
+        </form>
+      </div>
+    </div>
+    <div *ngIf="userInfoModel">
+      <span>{{userInfoModel.nickname}}</span>
+      <span>{{userInfoModel.createdAt}}</span>
+      <span>{{userInfoModel.email}}</span>
+    </div>
   </div>
 </div>

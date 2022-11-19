@@ -10,6 +10,7 @@ namespace PersonalDiary.BLL.MappingProfiles
         {
             CreateMap<User, UserDTO>();
             CreateMap<UserRegisterDTO, User>();
+            CreateMap<User, UserInfoDTO>();
         }
     }
 }

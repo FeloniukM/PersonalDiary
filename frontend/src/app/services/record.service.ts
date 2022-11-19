@@ -16,4 +16,8 @@ export class RecordService {
   public addRecord(record: RecordCreateModel): Observable<HttpResponse<RecordInfoModel>> {
     return this.httpService.postFullRequest<RecordInfoModel>(this.routePrefix, record);
   }
+
+  public getUserRecord(): Observable<HttpResponse<RecordInfoModel[]>> {
+    return this.httpService.getFullRequest<RecordInfoModel[]>(this.routePrefix);
+  }
 }

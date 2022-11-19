@@ -1,0 +1,22 @@
+.record {
+    margin-top: 25px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    font-size: 18px;
+}
+
+.date {
+    color: rgb(136, 130, 130);
+    font-size: 14px;
+    padding-left: 15px;
+}
+
+.text {
+    margin-top: 10px;
+}

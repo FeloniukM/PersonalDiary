@@ -1,14 +1,5 @@
-.container {
-    background-color: rgb(221, 217, 184);
-    width: 57%;
-    margin: auto;
-    padding: 10px;
-    height: 100%
-}
-
-.input {
-    padding: 40px 5px 0px 0px;
-    width: 40%;
+.content {
+    padding: 0px 15px;
 }
 
 .form-input {
@@ -16,15 +7,60 @@
     flex-direction: column;
 }
 
-.title-input {
-    margin-bottom: 10px;
-    width: 50%;
+.form-input * {
+    margin-top: 10px;
 }
 
-.content-input {
-    margin-bottom: 10px;
+.input-tool {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input-tool :last-child {
+    cursor: pointer;
+    padding-right: 10px;
+}
+
+.title-input {
+    padding-left: 10px;
+    border: none;
+    height: 30px;
+    width: 50%;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 }
 
 .file-input {
-    margin-bottom: 10px;
+    padding-left: 10px;
+}
+
+.content-input {
+    padding: 7px;
+    min-height: 60px;
+    max-height: 180px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    resize: vertical;
+}
+
+.records {
+    margin-top: 40px;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
 }
