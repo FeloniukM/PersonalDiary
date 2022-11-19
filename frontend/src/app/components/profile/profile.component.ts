@@ -37,14 +37,16 @@ export class ProfileComponent implements OnInit {
     }
 
     this.inviteEmailControl = new FormControl(this.inviteUserModel.email, [
-      Validators.required
+      Validators.required,
+      Validators.email
     ]);
     this.inviteFormGroup = new FormGroup({
       inviteEmailControl: this.inviteEmailControl
     })
 
     this.changeEmailControl = new FormControl(this.changeRoleModel.email, [
-      Validators.required
+      Validators.required,
+      Validators.email
     ]);
     this.changeFormGroup = new FormGroup({
       changeEmailControl: this.changeEmailControl

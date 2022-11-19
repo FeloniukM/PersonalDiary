@@ -38,7 +38,8 @@ namespace PersonalDiary.BLL
 
         public static void AddFluentValidation(this IServiceCollection services)
         {
-            services.AddValidatorsFromAssemblyContaining<UserValidator>();
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<UserRegisterValidator>();
         }
     }
 }
