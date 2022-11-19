@@ -116,5 +116,23 @@ namespace PersonalDiary.BLL.Service
             await _recordRepository.UpdateAsync(record);
             await _recordRepository.SaveChangesAsync();
         }
+
+        public async Task<List<RecordInfoDTO>> GetRecordsByDate(DateTime date, Guid authorId)
+        {
+            var records = await _recordRepository
+                .Query()
+                .Where(x => x.AuthorId == authorId && x.CreatedAt == date)
+                .ToListAsync();
+
+            foreach (var record in records)
+            {
+                if (record.IsCompressed == true && record.ImageBase64 != null)
+                {
+                    record.ImageBase64 = StringCompression.Decompress(record.ImageBase64);
+                }
+            }
+
+            return _mapper.Map<List<RecordInfoDTO>>(records);
+        }
     }
 }

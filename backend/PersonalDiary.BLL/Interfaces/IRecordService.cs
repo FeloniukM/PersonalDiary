@@ -10,5 +10,6 @@ namespace PersonalDiary.BLL.Interfaces
         Task<RecordInfoDTO> GetRecordById(Guid recordId);
         Task DeleteRecord(Guid recordId);
         Task UpdateRecord(RecordUpdateDTO recordDTO, Guid authorId);
+        Task<List<RecordInfoDTO>> GetRecordsByDate(DateTime date, Guid authorId);
     }
 }

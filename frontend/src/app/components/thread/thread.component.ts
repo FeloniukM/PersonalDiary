@@ -102,4 +102,12 @@ export class ThreadComponent implements OnInit {
     });
   }
 
+  sortByDate(event: any) {
+    this.recordService.searchRecordByDate(event.target.value)
+      .subscribe((data) => {
+        if(data.body) {
+          this.records = data.body;
+        }
+      })
+  }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.Record;
 using PersonalDiary.WebAPI.Extensions;
+using System;
 using System.Diagnostics;
 
 namespace PersonalDiary.WebAPI.Controllers
@@ -61,6 +62,15 @@ namespace PersonalDiary.WebAPI.Controllers
             await _recordService.UpdateRecord(recordUpdateDTO, authorId);
 
             return Ok();
+        }
+
+        [HttpGet("{date}")]
+        public async Task<IActionResult> GetByDate(DateTime date)
+        {
+            var authorId = this.GetUserIdFromToken();
+            var records = await _recordService.GetRecordsByDate(date, authorId);
+
+            return Ok(records);
         }
     }
 }
