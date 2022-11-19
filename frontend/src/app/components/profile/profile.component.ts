@@ -66,7 +66,6 @@ export class ProfileComponent implements OnInit {
   }
 
   turnBack() {
-    console.log('ss')
     this.router.navigate(['thread']);
   }
 }

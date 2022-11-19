@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.Record;
 using PersonalDiary.WebAPI.Extensions;
+using System.Diagnostics;
 
 namespace PersonalDiary.WebAPI.Controllers
 {
@@ -16,7 +17,7 @@ namespace PersonalDiary.WebAPI.Controllers
         public RecordController(IRecordService recordService)
         {
             _recordService = recordService;
-            
+
         }
 
         [HttpPost]
@@ -25,14 +26,14 @@ namespace PersonalDiary.WebAPI.Controllers
             var authorId = this.GetUserIdFromToken();
             var record = await _recordService.CreateRecord(recordCreateDTO, authorId);
 
-            return Created(HttpContext.Request.Path ,record);
+            return Created(HttpContext.Request.Path, record);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetFiveRecords()
+        [HttpGet("pageNumber")]
+        public async Task<IActionResult> GetFiveRecords(int pageNumber)
         {
             var authorId = this.GetUserIdFromToken();
-            var records = await _recordService.GetFiveRecords(authorId);
+            var records = await _recordService.GetFiveRecords(authorId, pageNumber);
 
             return Ok(records);
         }
