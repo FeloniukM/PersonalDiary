@@ -62,6 +62,7 @@ export class ThreadComponent implements OnInit {
         imageBase64: this.base64textString
       }).subscribe((data) => { 
         if(data.body) {
+          this.recordCreateModel = { text: "", title: "", imageBase64: "" };
           this.recordForm.reset();
 
           this.records.unshift(data.body);

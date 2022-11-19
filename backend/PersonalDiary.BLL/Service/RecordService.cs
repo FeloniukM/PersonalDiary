@@ -50,17 +50,13 @@ namespace PersonalDiary.BLL.Service
 
         public async Task<List<RecordInfoDTO>> GetFiveRecords(Guid authorId, int pageNumber)
         {
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-            var records = _recordRepository
+            var records = await _recordRepository
                 .Query()
                 .Where(x => x.AuthorId == authorId)
                 .OrderByDescending(x => x.CreatedAt)
                 .Skip((pageNumber - 1) * 5)
-                .Take(5);
-
-            stopWatch.Stop();
-            Console.WriteLine(stopWatch.ElapsedMilliseconds / 1000.0);
+                .Take(5)
+                .ToListAsync();
 
             foreach (var record in records)
             {
