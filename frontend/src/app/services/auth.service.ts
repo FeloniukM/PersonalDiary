@@ -89,8 +89,8 @@ export class AuthenticationService {
 
     private _setTokens(tokens: AccessTokenModel) {
         if (tokens && tokens.accessToken && tokens.refreshToken) {
-            localStorage.setItem('accessToken', JSON.stringify(tokens.accessToken.token));
-            localStorage.setItem('refreshToken', JSON.stringify(tokens.refreshToken));
+            localStorage.setItem('accessToken', tokens.accessToken.token);
+            localStorage.setItem('refreshToken', tokens.refreshToken);
         }
     }
 }

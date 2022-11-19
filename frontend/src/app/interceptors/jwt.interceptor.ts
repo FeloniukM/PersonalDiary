@@ -13,7 +13,6 @@ export class JwtInterceptor implements HttpInterceptor {
     let accessToken = localStorage.getItem('accessToken');
     
     if (accessToken) {
-      accessToken = accessToken.substring(1, accessToken.length-1);
 
       req = req.clone({ setHeaders: { Authorization: `Bearer ${accessToken}` } });
     }

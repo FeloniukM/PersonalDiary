@@ -11,6 +11,7 @@
     </div>
   </form>
   <div class="records" >
+    <input type="date" (change)="sortByDate($event)"/>
     <div *ngFor="let record of records">
       <app-record [record]="record"></app-record>
     </div>

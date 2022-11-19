@@ -62,6 +62,7 @@ export class ThreadComponent implements OnInit {
         imageBase64: this.base64textString
       }).subscribe((data) => { 
         if(data.body) {
+          this.recordCreateModel = { text: "", title: "", imageBase64: "" };
           this.recordForm.reset();
 
           this.records.unshift(data.body);
@@ -102,4 +103,12 @@ export class ThreadComponent implements OnInit {
     });
   }
 
+  sortByDate(event: any) {
+    this.recordService.searchRecordByDate(event.target.value)
+      .subscribe((data) => {
+        if(data.body) {
+          this.records = data.body;
+        }
+      })
+  }
 }

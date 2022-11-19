@@ -50,17 +50,13 @@ namespace PersonalDiary.BLL.Service
 
         public async Task<List<RecordInfoDTO>> GetFiveRecords(Guid authorId, int pageNumber)
         {
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-            var records = _recordRepository
+            var records = await _recordRepository
                 .Query()
                 .Where(x => x.AuthorId == authorId)
                 .OrderByDescending(x => x.CreatedAt)
                 .Skip((pageNumber - 1) * 5)
-                .Take(5);
-
-            stopWatch.Stop();
-            Console.WriteLine(stopWatch.ElapsedMilliseconds / 1000.0);
+                .Take(5)
+                .ToListAsync();
 
             foreach (var record in records)
             {
@@ -115,6 +111,24 @@ namespace PersonalDiary.BLL.Service
 
             await _recordRepository.UpdateAsync(record);
             await _recordRepository.SaveChangesAsync();
+        }
+
+        public async Task<List<RecordInfoDTO>> GetRecordsByDate(DateTime date, Guid authorId)
+        {
+            var records = await _recordRepository
+                .Query()
+                .Where(x => x.AuthorId == authorId && x.CreatedAt == date)
+                .ToListAsync();
+
+            foreach (var record in records)
+            {
+                if (record.IsCompressed == true && record.ImageBase64 != null)
+                {
+                    record.ImageBase64 = StringCompression.Decompress(record.ImageBase64);
+                }
+            }
+
+            return _mapper.Map<List<RecordInfoDTO>>(records);
         }
     }
 }

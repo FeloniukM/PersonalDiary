@@ -24,4 +24,8 @@ export class RecordService {
   public deleteRecord(recordId: string): Observable<void> {
     return this.httpService.deleteRequest(`${this.routePrefix}/${recordId}`)
   }
+
+  public searchRecordByDate(date: Date): Observable<HttpResponse<RecordInfoModel[]>> {
+    return this.httpService.getFullRequest<RecordInfoModel[]>(`${this.routePrefix}/${date}`);
+  }
 }
