@@ -14,6 +14,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { RecordComponent } from './components/record/record.component';
+import { MainComponent } from './components/main/main.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { RecordComponent } from './components/record/record.component';
     ThreadComponent,
     ProfileComponent,
     AuthComponent,
-    RecordComponent
+    RecordComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,

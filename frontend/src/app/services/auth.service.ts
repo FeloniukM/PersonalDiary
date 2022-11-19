@@ -6,9 +6,7 @@ import { HttpResponse } from '@angular/common/http';
 import { UserRegisterModel } from '../models/auth/user-register-model';
 import { AuthUser } from '../models/auth/auth-user';
 import { UserLoginModel } from '../models/auth/user-login-model';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { UserModel } from '../models/user/user-model';
-import { EventService } from './event.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({ providedIn: 'root' })
@@ -19,14 +17,10 @@ export class AuthenticationService {
     private isAuthenticationSub = new BehaviorSubject<boolean>(false);
     public isAuthentication = this.isAuthenticationSub.asObservable();
 
-    constructor(private httpService: HttpInternalService, private eventService: EventService) { }
+    constructor(private httpService: HttpInternalService) { }
 
     public nextisAuthentication(isAuthentication: boolean): void {
         this.isAuthenticationSub.next(isAuthentication);
-    }
-
-    public setUser(user: UserModel) {
-        this.eventService.userChanged(user);
     }
 
     public register(user: UserRegisterModel) {
@@ -84,9 +78,8 @@ export class AuthenticationService {
         return observable.pipe(
             map((resp) => {
                 if(resp.body) {
-                    console.log(resp);
                     this._setTokens(resp.body.token);
-                    this.eventService.userChanged(resp.body.user);
+                    sessionStorage.setItem("id", resp.body.user.id);
                     return resp.body.user;
                 }
                 return null;

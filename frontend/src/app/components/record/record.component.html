@@ -1,5 +1,10 @@
-<div>
-  <p>{{record.title}}</p>
-  <p>{{record.text}}</p>
-  <img [src]="imagePath">
+<div class="record">
+  <div class="header">
+    <span class="title">{{record.title}}</span>
+    <span class="date">{{record.createdAt | date:'d/M/yy, h:mm a'}}</span>
+  </div>
+  <div class="text">
+    <span >{{record.text}}</span>
+  </div>
+  <img *ngIf="record.imageBase64" [src]="imagePath">
 </div>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { RecordCreateModel } from 'src/app/models/record/record-create-model';
 import { RecordInfoModel } from 'src/app/models/record/record-info-model';
 import { RecordService } from 'src/app/services/record.service';
@@ -19,9 +18,15 @@ export class ThreadComponent implements OnInit {
   private base64textString: string = "";
   public records: RecordInfoModel[] = [];
 
-  constructor(private router: Router, private recordService: RecordService) { }
+  constructor(private recordService: RecordService) { }
 
   ngOnInit() {
+    this.recordService.getUserRecord().subscribe((data) => {
+      if(data.body) {
+        this.records = data.body;
+      }
+    });
+
     this.titleControl = new FormControl(this.recordCreateModel.title, [
       Validators.required
     ]);
@@ -33,10 +38,6 @@ export class ThreadComponent implements OnInit {
       titleControl: this.titleControl,
       textControl: this.textControl
     });
-  }
-
-  openProfile() {
-    this.router.navigate(['profile']);
   }
 
   addRecord() {

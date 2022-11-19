@@ -1,7 +1,8 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { InviteUserModel } from '../models/user/invite-user-model';
+import { UserEmailModel as UserEmailModel } from '../models/user/user-email-model';
+import { UserInfoModel } from '../models/user/user-info-model';
 import { HttpInternalService } from '../services/http-internal.service';
 
 
@@ -11,8 +12,16 @@ export class UserService {
 
     constructor(private httpService: HttpInternalService) {}
 
-    public invite(inviteUserModel: InviteUserModel): Observable<HttpResponse<InviteUserModel>> {
-        return this.httpService.postFullRequest(`${this.routePrefix}/invite`, inviteUserModel);
+    public invite(inviteUserModel: UserEmailModel): Observable<void> {
+        return this.httpService.postRequest(`${this.routePrefix}/invite`, inviteUserModel);
+    }
+
+    public getUserInfo(userId: string): Observable<HttpResponse<UserInfoModel>> {
+        return this.httpService.getFullRequest<UserInfoModel>(`${this.routePrefix}/${userId}`);
+    }
+
+    public changeUserRole(inviteUserModel: UserEmailModel): Observable<void> {
+        return this.httpService.putRequest(`${this.routePrefix}`, inviteUserModel);
     }
 
 }
