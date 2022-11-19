@@ -13,6 +13,7 @@ export class ThreadComponent implements OnInit {
   public recordForm: FormGroup;
   public titleControl: FormControl;
   public textControl: FormControl;
+  public fileControl: FormControl;
 
   public recordCreateModel: RecordCreateModel = { text: "", title: "", imageBase64: "" }
   private base64textString: string = "";
@@ -44,10 +45,12 @@ export class ThreadComponent implements OnInit {
       Validators.required,
       Validators.maxLength(500)
     ]);
+    this.fileControl = new FormControl(this.recordCreateModel.imageBase64, []);
 
     this.recordForm = new FormGroup({
       titleControl: this.titleControl,
-      textControl: this.textControl
+      textControl: this.textControl,
+      fileControl: this.fileControl
     });
   }
 
@@ -60,6 +63,7 @@ export class ThreadComponent implements OnInit {
       }).subscribe((data) => { 
         if(data.body) {
           this.recordForm.reset();
+
           this.records.unshift(data.body);
         }
       });

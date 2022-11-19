@@ -24,3 +24,11 @@
 .attachment {
     max-height: 300px;
 }
+
+.remove {
+    padding-left: 15px;
+}
+
+.hidden {
+    visibility: hidden;
+}

@@ -20,4 +20,8 @@ export class RecordService {
   public getUserRecord(page: number): Observable<HttpResponse<RecordInfoModel[]>> {
     return this.httpService.getFullRequest<RecordInfoModel[]>(`${this.routePrefix}/pageNumber?pageNumber=${page}`);
   }
+
+  public deleteRecord(recordId: string): Observable<void> {
+    return this.httpService.deleteRequest(`${this.routePrefix}/${recordId}`)
+  }
 }
