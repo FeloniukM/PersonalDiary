@@ -2,6 +2,7 @@
   <div class="header">
     <span class="title">{{record.title}}</span>
     <span class="date">{{record.createdAt | date:'d/M/yy, h:mm a'}}</span>
+    <i [ngClass]="{ 'hidden': canBeDeleted() }" class="remove fa-solid fa-trash fa-sm" (click)="remove()"></i>
   </div>
   <div class="text">
     <span >{{record.text}}</span>

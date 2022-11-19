@@ -4,7 +4,7 @@
     <textarea class="content-input" formControlName="textControl" placeholder="Here can be our record"></textarea>
     <div class="input-tool">
       <label class="custom-file-upload">
-        <input type="file" (change)="handleFileSelect($event)"/>
+        <input type="file" (change)="handleFileSelect($event)" formControlName="fileControl"/>
         <i class="fa fa-cloud-upload"></i> Attach file
       </label>
       <i class="fa-regular fa-paper-plane fa-xl" (click)="addRecord()"></i>

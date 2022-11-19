@@ -19,4 +19,10 @@ export class MainComponent implements OnInit {
   openProfile() {
     this.router.navigate(['profile']);
   }
+
+  logout() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    window.location.reload();
+  }
 }
