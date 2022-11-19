@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PersonalDiary.BLL.Exeptions;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.User;
 using PersonalDiary.Common.Email;
@@ -44,7 +45,7 @@ namespace PersonalDiary.BLL.Service
 
             if (user != null && user.IsAdmin == true)
             {
-                throw new Exception();
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "User not found or not permission");
             }
 
             var request = new MailRequest()
@@ -63,7 +64,7 @@ namespace PersonalDiary.BLL.Service
 
             if(user == null)
             {
-                throw new Exception();
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "User was not found");
             }
 
             return _mapper.Map<UserInfoDTO>(user);
@@ -74,8 +75,8 @@ namespace PersonalDiary.BLL.Service
             var admin = await _userRepository.GetByKeyAsync(adminId);
 
             if (admin == null || admin.IsAdmin == false) 
-            { 
-                throw new Exception();
+            {
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "User not found or not permission");
             }
 
             var user = await _userRepository
@@ -85,7 +86,7 @@ namespace PersonalDiary.BLL.Service
 
             if(user == null)
             {
-                throw new Exception();
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "User was not found");
             }
 
             user.IsAdmin = true;

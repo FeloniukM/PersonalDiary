@@ -37,10 +37,12 @@ export class ThreadComponent implements OnInit {
     });
 
     this.titleControl = new FormControl(this.recordCreateModel.title, [
-      Validators.required
+      Validators.required,
+      Validators.maxLength(100)
     ]);
     this.textControl = new FormControl(this.recordCreateModel.text, [
-      Validators.required
+      Validators.required,
+      Validators.maxLength(500)
     ]);
 
     this.recordForm = new FormGroup({

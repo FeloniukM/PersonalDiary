@@ -6,7 +6,6 @@ using PersonalDiary.Common.Auth;
 using PersonalDiary.Common.Security;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Text;
 
 namespace PersonalDiary.BLL.JWT
@@ -69,7 +68,7 @@ namespace PersonalDiary.BLL.JWT
 
             if (claimsPrincipal == null)
             {
-                throw new InvalidTokenException("access");
+                throw new HttpException(System.Net.HttpStatusCode.NotFound, "Claims principal not found");
             }
 
             return Guid.Parse(claimsPrincipal.Claims.First(c => c.Type == "id").Value);
@@ -90,7 +89,7 @@ namespace PersonalDiary.BLL.JWT
             }
             catch (Exception)
             {
-                return null;
+                throw new Exception();
             }
         }
 
