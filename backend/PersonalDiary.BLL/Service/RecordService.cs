@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PersonalDiary.BLL.Helpers;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.Record;
 using PersonalDiary.DAL.Entities;
 using PersonalDiary.DAL.Interfaces;
+using System.Diagnostics;
+using System.Text;
 
 namespace PersonalDiary.BLL.Service
 {
@@ -27,18 +30,44 @@ namespace PersonalDiary.BLL.Service
             record.CreatedAt = DateTime.UtcNow;
             record.UpdatedAt = DateTime.UtcNow;
 
+            if (record.ImageBase64 != null && Encoding.UTF8.GetByteCount(record.ImageBase64) > 3000000)
+            {
+                record.ImageBase64 = StringCompression.Compress(record.ImageBase64);
+                record.IsCompressed = true;
+            }
+
             await _recordRepository.AddAsync(record);
             await _recordRepository.SaveChangesAsync();
+
+            if (record.IsCompressed == true && record.ImageBase64 != null)
+            {
+                record.ImageBase64 = StringCompression.Decompress(record.ImageBase64);
+            }
 
             return _mapper.Map<RecordInfoDTO>(record);
         }
 
-        public async Task<List<RecordInfoDTO>> GetFiveRecords(Guid authorId)
+        public async Task<List<RecordInfoDTO>> GetFiveRecords(Guid authorId, int pageNumber)
         {
-            var records = await _recordRepository
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            var records = _recordRepository
                 .Query()
                 .Where(x => x.AuthorId == authorId)
-                .ToListAsync();
+                .OrderByDescending(x => x.CreatedAt)
+                .Skip((pageNumber - 1) * 5)
+                .Take(5);
+
+            stopWatch.Stop();
+            Console.WriteLine(stopWatch.ElapsedMilliseconds / 1000.0);
+
+            foreach (var record in records)
+            {
+                if (record.IsCompressed == true && record.ImageBase64 != null)
+                {
+                    record.ImageBase64 = StringCompression.Decompress(record.ImageBase64);
+                }
+            }
 
             return _mapper.Map<List<RecordInfoDTO>>(records);
         }
@@ -46,6 +75,11 @@ namespace PersonalDiary.BLL.Service
         public async Task<RecordInfoDTO> GetRecordById(Guid recordId)
         {
             var record = await _recordRepository.GetByKeyAsync(recordId);
+
+            if (record.IsCompressed == true && record.ImageBase64 != null)
+            {
+                record.ImageBase64 = StringCompression.Decompress(record.ImageBase64);
+            }
 
             return _mapper.Map<RecordInfoDTO>(record);
         }

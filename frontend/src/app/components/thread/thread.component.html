@@ -4,7 +4,7 @@
     <textarea class="content-input" formControlName="textControl" placeholder="Here can be our record"></textarea>
     <div class="input-tool">
       <label class="custom-file-upload">
-        <input type="file"/>
+        <input type="file" (change)="handleFileSelect($event)"/>
         <i class="fa fa-cloud-upload"></i> Attach file
       </label>
       <i class="fa-regular fa-paper-plane fa-xl" (click)="addRecord()"></i>
@@ -14,5 +14,6 @@
     <div *ngFor="let record of records">
       <app-record [record]="record"></app-record>
     </div>
+    <button [hidden]="hiddenShowMore" (click)="showMore()">Show more</button>
   </div>
 </div>

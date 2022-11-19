@@ -17,13 +17,22 @@ export class ThreadComponent implements OnInit {
   public recordCreateModel: RecordCreateModel = { text: "", title: "", imageBase64: "" }
   private base64textString: string = "";
   public records: RecordInfoModel[] = [];
+  private page: number = 1;
+  public hiddenShowMore: boolean = true;
 
   constructor(private recordService: RecordService) { }
 
   ngOnInit() {
-    this.recordService.getUserRecord().subscribe((data) => {
+    this.recordService.getUserRecord(this.page).subscribe((data) => {
       if(data.body) {
         this.records = data.body;
+
+        if(data.body.length < 5) {
+          this.hiddenShowMore = true;
+        }
+        else {
+          this.hiddenShowMore = false
+        }
       }
     });
 
@@ -48,7 +57,8 @@ export class ThreadComponent implements OnInit {
         imageBase64: this.base64textString
       }).subscribe((data) => { 
         if(data.body) {
-          this.records.push(data.body);
+          this.recordForm.reset();
+          this.records.unshift(data.body);
         }
       });
     }
@@ -71,6 +81,19 @@ export class ThreadComponent implements OnInit {
     var binaryString = readerEvt.target.result;
 
     this.base64textString= btoa(binaryString);
+  }
+
+  showMore() {
+    this.page++;
+    this.recordService.getUserRecord(this.page).subscribe((data) => {
+      if(data.body) {
+        this.records = this.records.concat(data.body);
+
+        if(data.body.length < 5) {
+          this.hiddenShowMore = true;
+        }
+      }
+    });
   }
 
 }

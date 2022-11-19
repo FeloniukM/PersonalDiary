@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { RecordInfoModel } from 'src/app/models/record/record-info-model';
 
 @Component({
@@ -9,11 +10,13 @@ import { RecordInfoModel } from 'src/app/models/record/record-info-model';
 export class RecordComponent implements OnInit {
   @Input() record: RecordInfoModel;
 
-  public imagePath: string;
-  constructor() { }
+  public image: any;
+  constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.imagePath = `data:image/png;base64, ${this.record.imageBase64}`;
+    if(this.record.imageBase64) {
+      this.image = this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${this.record.imageBase64}`);
+    }
   }
 
 }
