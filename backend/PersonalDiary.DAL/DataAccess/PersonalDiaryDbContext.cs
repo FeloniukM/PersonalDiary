@@ -24,6 +24,7 @@ namespace PersonalDiary.DAL.DataAccess
 
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Record> Records { get; set; } = null!;
+        public DbSet<Image> Images { get; set; } = null!;
         public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
     }
 }

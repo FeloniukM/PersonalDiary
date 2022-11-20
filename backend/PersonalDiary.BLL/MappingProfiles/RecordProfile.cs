@@ -8,7 +8,8 @@ namespace PersonalDiary.BLL.MappingProfiles
     {
         public RecordProfile()
         {
-            CreateMap<RecordCreateDTO, Record>();
+            CreateMap<RecordCreateDTO, Record>()
+                .ForMember(x => x.Image, config => config.Ignore());
             CreateMap<Record, RecordInfoDTO>();
             CreateMap<RecordUpdateDTO, Record>();
         }
