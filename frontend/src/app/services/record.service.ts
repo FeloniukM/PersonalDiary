@@ -14,7 +14,15 @@ export class RecordService {
   constructor(private httpService: HttpInternalService) { }
 
   public addRecord(record: RecordCreateModel): Observable<HttpResponse<RecordInfoModel>> {
-    return this.httpService.postFullRequest<RecordInfoModel>(this.routePrefix, record);
+    const data = new FormData();
+    data.append('title', record.title);
+    data.append('text', record.text);
+    
+    if(record.image) {
+      data.append('image', record.image);
+    }
+
+    return this.httpService.postFullRequest<RecordInfoModel>(this.routePrefix, data);
   }
 
   public getUserRecord(page: number): Observable<HttpResponse<RecordInfoModel[]>> {

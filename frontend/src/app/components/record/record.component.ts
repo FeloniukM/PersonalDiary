@@ -11,13 +11,9 @@ import { RecordService } from 'src/app/services/record.service';
 export class RecordComponent implements OnInit {
   @Input() record: RecordInfoModel;
 
-  public image: any;
-  constructor(private sanitizer: DomSanitizer, private recordService: RecordService) { }
+  constructor(private recordService: RecordService) { }
 
   ngOnInit() {
-    if(this.record.imageBase64) {
-      this.image = this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${this.record.imageBase64}`);
-    }
   }
 
   remove() {

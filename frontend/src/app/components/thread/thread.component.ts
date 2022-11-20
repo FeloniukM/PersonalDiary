@@ -15,8 +15,8 @@ export class ThreadComponent implements OnInit {
   public textControl: FormControl;
   public fileControl: FormControl;
 
-  public recordCreateModel: RecordCreateModel = { text: "", title: "", imageBase64: "" }
-  private base64textString: string = "";
+  public recordCreateModel: RecordCreateModel = { text: "", title: "", image: null}
+  public image: File | null;
   public records: RecordInfoModel[] = [];
   private page: number = 1;
   public hiddenShowMore: boolean = true;
@@ -45,7 +45,7 @@ export class ThreadComponent implements OnInit {
       Validators.required,
       Validators.maxLength(500)
     ]);
-    this.fileControl = new FormControl(this.recordCreateModel.imageBase64, []);
+    this.fileControl = new FormControl(this.recordCreateModel.image, []);
 
     this.recordForm = new FormGroup({
       titleControl: this.titleControl,
@@ -59,12 +59,10 @@ export class ThreadComponent implements OnInit {
       this.recordService.addRecord({ 
         title: this.recordForm.get('titleControl')?.value,
         text: this.recordForm.get('textControl')?.value,
-        imageBase64: this.base64textString
+        image: this.image
       }).subscribe((data) => { 
         if(data.body) {
-          this.recordCreateModel = { text: "", title: "", imageBase64: "" };
           this.recordForm.reset();
-
           this.records.unshift(data.body);
         }
       });
@@ -76,18 +74,8 @@ export class ThreadComponent implements OnInit {
     var file = files[0];
   
     if (files && file) {
-        var reader = new FileReader();
-
-        reader.onload =this._handleReaderLoaded.bind(this);
-
-        reader.readAsBinaryString(file);
+      this.image = file;
     }
-  }
-
-  _handleReaderLoaded(readerEvt: any) {
-    var binaryString = readerEvt.target.result;
-
-    this.base64textString= btoa(binaryString);
   }
 
   showMore() {

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PersonalDiary.BLL.Exeptions;
 using PersonalDiary.BLL.Interfaces;
+using PersonalDiary.Common.DTO.Image;
+using Microsoft.Extensions.Options;
 using PersonalDiary.DAL.Entities;
 using System.Net.Http.Json;
 
@@ -8,10 +10,12 @@ namespace PersonalDiary.BLL.Service
 {
     internal class UploadService : IUploadService
     {
+        public readonly ImageStoregeOptions _imageStoregeOptions;
         private readonly HttpClient _httpClient;
 
-        public UploadService(HttpClient httpService)
+        public UploadService(IOptions<ImageStoregeOptions> option, HttpClient httpService)
         {
+            _imageStoregeOptions = option.Value;
             _httpClient = httpService; 
         }
 
@@ -24,14 +28,14 @@ namespace PersonalDiary.BLL.Service
 
             var responce = await _httpClient.PostAsync(BuildUrl("https://upload.gyazo.com/api/upload"), content);
 
-            var body = await responce.Content.ReadFromJsonAsync(typeof(Image));
+            var body = await responce.Content.ReadFromJsonAsync<Image>();
 
             if(body == null)
             {
                 throw new HttpException(System.Net.HttpStatusCode.BadRequest, "Response body empty");
             }
 
-            return (Image)body;
+            return body;
         }
 
         public async Task DeleteImage(string imageId)
@@ -41,7 +45,7 @@ namespace PersonalDiary.BLL.Service
 
         private string BuildUrl(string url)
         {
-            return $"{url}?access_token=-vudl7THwMSy0SUU7HTRWblryvYpgN7H_FkZS1VTURg";
+            return $"{url}?access_token={_imageStoregeOptions.AccessToken}";
         }
     }
 }

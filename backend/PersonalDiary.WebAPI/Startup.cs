@@ -1,4 +1,5 @@
 ﻿using PersonalDiary.BLL;
+using PersonalDiary.Common.DTO.Image;
 using PersonalDiary.Common.Email;
 using PersonalDiary.WebAPI.Extensions;
 
@@ -20,6 +21,7 @@ namespace PersonalDiary.WebAPI
             services.AddAuthorization();
             services.AddCustomService(Configuration);
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.Configure<ImageStoregeOptions>(Configuration.GetSection("ImageStoregeOptions"));
             services.ConfigureJwt(Configuration);
             services.AddAutoMapper();
             services.AddFluentValidation();
@@ -29,7 +31,7 @@ namespace PersonalDiary.WebAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 

@@ -50,6 +50,7 @@ namespace PersonalDiary.BLL.Service
             var records = await _recordRepository
                 .Query()
                 .Where(x => x.AuthorId == authorId)
+                .Include(x => x.Image)
                 .OrderByDescending(x => x.CreatedAt)
                 .Skip((pageNumber - 1) * 5)
                 .Take(5)
