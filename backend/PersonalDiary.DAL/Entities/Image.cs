@@ -9,5 +9,8 @@ namespace PersonalDiary.DAL.Entities
         public string Thumb_url { get; set; } = null!;
         public string Url { get; set; } = null!;
         public string Type { get; set; } = null!;
+
+        public Guid RecordId { get; set; }
+        public Record? Record { get; set; }
     }
 }

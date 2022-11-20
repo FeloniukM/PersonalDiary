@@ -12,8 +12,8 @@ using PersonalDiary.DAL.DataAccess;
 namespace PersonalDiary.DAL.Migrations
 {
     [DbContext(typeof(PersonalDiaryDbContext))]
-    [Migration("20221120170659_improve_image")]
-    partial class improve_image
+    [Migration("20221120213246_NewImageTable")]
+    partial class NewImageTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,6 +41,9 @@ namespace PersonalDiary.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("RecordId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Thumb_url")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -54,6 +57,9 @@ namespace PersonalDiary.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RecordId")
+                        .IsUnique();
 
                     b.ToTable("Images");
                 });
@@ -70,9 +76,6 @@ namespace PersonalDiary.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ImageId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -85,8 +88,6 @@ namespace PersonalDiary.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("ImageId");
 
                     b.ToTable("Records");
                 });
@@ -157,8 +158,8 @@ namespace PersonalDiary.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dd81b70a-edb2-41ff-b223-51a05e5d6d05"),
-                            CreatedAt = new DateTime(2022, 11, 20, 17, 6, 59, 426, DateTimeKind.Utc).AddTicks(3032),
+                            Id = new Guid("8664bfb2-4691-483b-8e38-a5dcfb28541f"),
+                            CreatedAt = new DateTime(2022, 11, 20, 21, 32, 46, 671, DateTimeKind.Utc).AddTicks(8895),
                             Email = "tester@gmail.com",
                             IsAdmin = true,
                             IsDelete = false,
@@ -166,6 +167,17 @@ namespace PersonalDiary.DAL.Migrations
                             Password = "Password_1",
                             Salt = "D;%yL9TS:5PalS/d"
                         });
+                });
+
+            modelBuilder.Entity("PersonalDiary.DAL.Entities.Image", b =>
+                {
+                    b.HasOne("PersonalDiary.DAL.Entities.Record", "Record")
+                        .WithOne("Image")
+                        .HasForeignKey("PersonalDiary.DAL.Entities.Image", "RecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Record");
                 });
 
             modelBuilder.Entity("PersonalDiary.DAL.Entities.Record", b =>
@@ -176,13 +188,7 @@ namespace PersonalDiary.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PersonalDiary.DAL.Entities.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-
                     b.Navigation("Author");
-
-                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("PersonalDiary.DAL.Entities.RefreshToken", b =>
@@ -194,6 +200,11 @@ namespace PersonalDiary.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PersonalDiary.DAL.Entities.Record", b =>
+                {
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("PersonalDiary.DAL.Entities.User", b =>
