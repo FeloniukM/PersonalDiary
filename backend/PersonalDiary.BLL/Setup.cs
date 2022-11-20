@@ -22,6 +22,8 @@ namespace PersonalDiary.BLL
             service.AddScoped<IJwtFactory, JwtFactory>();
             service.AddScoped<IEmailService, EmailService>();
             service.AddScoped<IRecordService, RecordService>();
+            service.AddScoped<IUploadService, UploadService>();
+            service.AddHttpClient();
 
             service.AddDbContext(configuration);
             service.AddRepository();

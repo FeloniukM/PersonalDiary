@@ -1,12 +1,9 @@
-﻿using PersonalDiary.DAL.Interfaces;
+﻿using PersonalDiary.DAL.Entities.Abstractions;
 
 namespace PersonalDiary.DAL.Entities
 {
-    public class RefreshToken : IBaseEntity
+    public class RefreshToken : BaseEntity
     {
-        public Guid Id { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
         private const int DAYS_TO_EXPIRE = 5;
 
         public RefreshToken()

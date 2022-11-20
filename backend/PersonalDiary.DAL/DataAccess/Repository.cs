@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PersonalDiary.DAL.Entities.Abstractions;
 using PersonalDiary.DAL.Interfaces;
 using System.Linq.Expressions;
 
 namespace PersonalDiary.DAL.DataAccess
 {
-    internal class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IBaseEntity
+    internal class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
         protected readonly PersonalDiaryDbContext _dbContext;
         protected readonly DbSet<TEntity> _dbSet;

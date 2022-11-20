@@ -24,6 +24,11 @@ namespace PersonalDiary.DAL.Configuration
                 .HasMaxLength(500)
                 .IsRequired();
 
+            builder
+                .HasOne(r => r.Image)
+                .WithOne(i => i.Record)
+                .HasForeignKey<Image>(r => r.RecordId);
+
         }
     }
 }

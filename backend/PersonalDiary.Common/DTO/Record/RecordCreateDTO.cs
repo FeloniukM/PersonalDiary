@@ -6,6 +6,6 @@ namespace PersonalDiary.Common.DTO.Record
     {
         public string Title { get; set; } = null!;
         public string Text { get; set; } = null!;
-        public string? ImageBase64 { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

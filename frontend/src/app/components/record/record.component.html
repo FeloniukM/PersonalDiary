@@ -7,5 +7,5 @@
   <div class="text">
     <span >{{record.text}}</span>
   </div>
-  <img class="attachment" *ngIf="record.imageBase64" [src]="image">
+  <img class="attachment" *ngIf="record.image" [src]="record.image.url">
 </div>

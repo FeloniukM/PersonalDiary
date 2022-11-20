@@ -1,49 +1,46 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PersonalDiary.BLL.Exeptions;
-using PersonalDiary.BLL.Helpers;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.Record;
 using PersonalDiary.DAL.Entities;
 using PersonalDiary.DAL.Interfaces;
-using System.Diagnostics;
-using System.Text;
 
 namespace PersonalDiary.BLL.Service
 {
     public class RecordService : IRecordService
     {
         private readonly IMapper _mapper;
+        private readonly IUploadService _uploadService;
+        private readonly IRepository<Image> _imageRepository;
         private readonly IRepository<Record> _recordRepository;
 
-        public RecordService(IMapper mapper, IRepository<Record> recordRepository)
+        public RecordService(IMapper mapper, 
+            IRepository<Record> recordRepository, 
+            IUploadService uploadService, 
+            IRepository<Image> imageRepository)
         {
             _mapper = mapper;
             _recordRepository = recordRepository;
+            _uploadService = uploadService;
+            _imageRepository = imageRepository;
         }
 
         public async Task<RecordInfoDTO> CreateRecord(RecordCreateDTO recordCreateDTO, Guid authorId)
         {
             var record = _mapper.Map<Record>(recordCreateDTO);
-
-            record.Id = Guid.NewGuid();
             record.AuthorId = authorId;
-            record.CreatedAt = DateTime.UtcNow;
-            record.UpdatedAt = DateTime.UtcNow;
 
-            if (record.ImageBase64 != null && Encoding.UTF8.GetByteCount(record.ImageBase64) > 3000000)
+            if(recordCreateDTO.Image != null)
             {
-                record.ImageBase64 = StringCompression.Compress(record.ImageBase64);
-                record.IsCompressed = true;
+                var image = await _uploadService.UploadImage(recordCreateDTO.Image);
+
+                record.Image = image;
+                await _imageRepository.AddAsync(image);
             }
 
             await _recordRepository.AddAsync(record);
             await _recordRepository.SaveChangesAsync();
-
-            if (record.IsCompressed == true && record.ImageBase64 != null)
-            {
-                record.ImageBase64 = StringCompression.Decompress(record.ImageBase64);
-            }
 
             return _mapper.Map<RecordInfoDTO>(record);
         }
@@ -53,18 +50,11 @@ namespace PersonalDiary.BLL.Service
             var records = await _recordRepository
                 .Query()
                 .Where(x => x.AuthorId == authorId)
+                .Include(x => x.Image)
                 .OrderByDescending(x => x.CreatedAt)
                 .Skip((pageNumber - 1) * 5)
                 .Take(5)
                 .ToListAsync();
-
-            foreach (var record in records)
-            {
-                if (record.IsCompressed == true && record.ImageBase64 != null)
-                {
-                    record.ImageBase64 = StringCompression.Decompress(record.ImageBase64);
-                }
-            }
 
             return _mapper.Map<List<RecordInfoDTO>>(records);
         }
@@ -72,11 +62,6 @@ namespace PersonalDiary.BLL.Service
         public async Task<RecordInfoDTO> GetRecordById(Guid recordId)
         {
             var record = await _recordRepository.GetByKeyAsync(recordId);
-
-            if (record.IsCompressed == true && record.ImageBase64 != null)
-            {
-                record.ImageBase64 = StringCompression.Decompress(record.ImageBase64);
-            }
 
             return _mapper.Map<RecordInfoDTO>(record);
         }
@@ -107,7 +92,6 @@ namespace PersonalDiary.BLL.Service
             }
 
             _mapper.Map(recordDTO, record);
-            record.UpdatedAt = DateTime.UtcNow;
 
             await _recordRepository.UpdateAsync(record);
             await _recordRepository.SaveChangesAsync();
@@ -119,14 +103,6 @@ namespace PersonalDiary.BLL.Service
                 .Query()
                 .Where(x => x.AuthorId == authorId && x.CreatedAt == date)
                 .ToListAsync();
-
-            foreach (var record in records)
-            {
-                if (record.IsCompressed == true && record.ImageBase64 != null)
-                {
-                    record.ImageBase64 = StringCompression.Decompress(record.ImageBase64);
-                }
-            }
 
             return _mapper.Map<List<RecordInfoDTO>>(records);
         }

@@ -19,7 +19,6 @@ namespace PersonalDiary.DAL.DataSeed
                     Email = "tester@gmail.com",
                     Password = "Password_1",
                     CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow,
                     IsAdmin = true,
                     IsDelete = false,
                     Salt = "D;%yL9TS:5PalS/d",

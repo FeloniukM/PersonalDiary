@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using FakeItEasy;
 using MockQueryable.FakeItEasy;
+using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.BLL.Service;
 using PersonalDiary.Common.DTO.Record;
 using PersonalDiary.DAL.Entities;
 using PersonalDiary.DAL.Interfaces;
-using static System.Net.Mime.MediaTypeNames;
+using Image = PersonalDiary.DAL.Entities.Image;
 using Record = PersonalDiary.DAL.Entities.Record;
 
 namespace PersonalDiary.BLL.Tests.ServicesTest
@@ -14,13 +15,18 @@ namespace PersonalDiary.BLL.Tests.ServicesTest
     {
         private readonly RecordService _recordService;
         private readonly IRepository<Record> _recordRepository;
+        private readonly IUploadService _uploadService;
+        private readonly IRepository<Image> _imageRepository;
         private readonly IMapper _mapper;
 
         public RecordServiceTest()
         {
             _mapper = A.Fake<IMapper>();
+            _uploadService = A.Fake<IUploadService>();
+            _imageRepository = A.Fake<IRepository<Image>>();
             _recordRepository = A.Fake<IRepository<Record>>();
-            _recordService = new RecordService(_mapper, _recordRepository);
+
+            _recordService = new RecordService(_mapper, _recordRepository, _uploadService, _imageRepository);
         }
 
         [Fact]
@@ -30,27 +36,22 @@ namespace PersonalDiary.BLL.Tests.ServicesTest
             {
                 Title = "SomeTitle",
                 Text = "SomeText",
-                ImageBase64 = "image"
             };
             var record = new Record()
             {
                 Id = Guid.NewGuid(),
                 AuthorId = Guid.NewGuid(),
-                ImageBase64 = "image",
                 Text = "SomeText",
                 Title = "SomeTitle",
                 CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
                 Author = new User()
             };
             var recordInfoDTO = new RecordInfoDTO()
             {
                 Id = record.Id,
                 CreatedAt = record.CreatedAt,
-                UpdatedAt = record.UpdatedAt,
                 Text = "SomeText",
                 Title = "SomeTitle",
-                ImageBase64 = "image"
             };
 
             A.CallTo(() => _mapper.Map<Record>(recordCreateDTO)).Returns(record);
@@ -74,22 +75,18 @@ namespace PersonalDiary.BLL.Tests.ServicesTest
                 {
                     Id = Guid.NewGuid(),
                     AuthorId = authorId,
-                    ImageBase64 = "image",
                     Text = "SomeText",
                     Title = "SomeTitle",
                     CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
                     Author = new User()
                 },
                 new Record()
                 {
                     Id = Guid.NewGuid(),
                     AuthorId = authorId,
-                    ImageBase64 = "image2",
                     Text = "SomeText2",
                     Title = "SomeTitle2",
                     CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
                     Author = new User()
                 }
             };
@@ -100,26 +97,23 @@ namespace PersonalDiary.BLL.Tests.ServicesTest
                 {
                     Id = records[0].Id,
                     CreatedAt = records[0].CreatedAt,
-                    UpdatedAt = records[0].UpdatedAt,
                     Text = "SomeText",
-                    Title = "SomeTitle",
-                    ImageBase64 = "image"
+                    Title = "SomeTitle"
+
                 },
                 new RecordInfoDTO()
                 {
                     Id = records[1].Id,
                     CreatedAt = records[1].CreatedAt,
-                    UpdatedAt = records[1].UpdatedAt,
                     Text = "SomeText2",
-                    Title = "SomeTitle2",
-                    ImageBase64 = "image2"
+                    Title = "SomeTitle2"
                 }
             };
 
             A.CallTo(() => _recordRepository.Query()).Returns(queryable);
             A.CallTo(() => _mapper.Map<List<RecordInfoDTO>>(A<List<Record>>.That.IsInstanceOf(typeof(List<Record>)))).Returns(recordsInfo);
 
-            var result = await _recordService.GetFiveRecords(authorId);
+            var result = await _recordService.GetFiveRecords(authorId, 1);
 
             Assert.NotNull(result);
             Assert.Equal(recordsInfo, result);
@@ -132,21 +126,17 @@ namespace PersonalDiary.BLL.Tests.ServicesTest
             {
                 Id = Guid.NewGuid(),
                 AuthorId = Guid.NewGuid(),
-                ImageBase64 = "image",
                 Text = "SomeText",
                 Title = "SomeTitle",
                 CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
                 Author = new User()
             };
             var recordInfoDTO = new RecordInfoDTO()
             {
                 Id = record.Id,
-                ImageBase64 = "image",
                 Text = "SomeText",
                 Title = "SomeTitle",
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
+                CreatedAt = DateTime.Now
             };
 
             A.CallTo(() => _recordRepository.GetByKeyAsync(record.Id)).Returns(record);
@@ -165,11 +155,9 @@ namespace PersonalDiary.BLL.Tests.ServicesTest
             {
                 Id = Guid.NewGuid(),
                 AuthorId = Guid.NewGuid(),
-                ImageBase64 = "image",
                 Text = "SomeText",
                 Title = "SomeTitle",
                 CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
                 Author = new User()
             };
 
@@ -191,11 +179,9 @@ namespace PersonalDiary.BLL.Tests.ServicesTest
                 {
                     Id = Guid.NewGuid(),
                     AuthorId = authorId,
-                    ImageBase64 = "image",
                     Text = "SomeText",
                     Title = "SomeTitle",
                     CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
                     Author = new User()
                 }
             };

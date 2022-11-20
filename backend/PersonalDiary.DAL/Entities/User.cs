@@ -1,12 +1,9 @@
-﻿using PersonalDiary.DAL.Interfaces;
+﻿using PersonalDiary.DAL.Entities.Abstractions;
 
 namespace PersonalDiary.DAL.Entities
 {
-    public class User : IBaseEntity
+    public class User : BaseEntity
     {
-        public Guid Id { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
         public string Nickname { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
