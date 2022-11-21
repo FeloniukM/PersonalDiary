@@ -152,19 +152,6 @@ namespace PersonalDiary.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8664bfb2-4691-483b-8e38-a5dcfb28541f"),
-                            CreatedAt = new DateTime(2022, 11, 20, 21, 32, 46, 671, DateTimeKind.Utc).AddTicks(8895),
-                            Email = "tester@gmail.com",
-                            IsAdmin = true,
-                            IsDelete = false,
-                            Nickname = "admin",
-                            Password = "Password_1",
-                            Salt = "D;%yL9TS:5PalS/d"
-                        });
                 });
 
             modelBuilder.Entity("PersonalDiary.DAL.Entities.Image", b =>

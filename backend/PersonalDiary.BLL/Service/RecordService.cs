@@ -61,7 +61,11 @@ namespace PersonalDiary.BLL.Service
 
         public async Task<RecordInfoDTO> GetRecordById(Guid recordId)
         {
-            var record = await _recordRepository.GetByKeyAsync(recordId);
+            var record = await _recordRepository
+                .Query()
+                .Where(x => x.Id == recordId)
+                .Include(x => x.Image)
+                .FirstOrDefaultAsync();
 
             return _mapper.Map<RecordInfoDTO>(record);
         }

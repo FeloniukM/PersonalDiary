@@ -7,7 +7,6 @@ using PersonalDiary.Common.DTO.User;
 using PersonalDiary.Common.Security;
 using PersonalDiary.DAL.Entities;
 using PersonalDiary.DAL.Interfaces;
-using PersonalDiary.DAL.Migrations;
 
 namespace PersonalDiary.BLL.Service
 {
