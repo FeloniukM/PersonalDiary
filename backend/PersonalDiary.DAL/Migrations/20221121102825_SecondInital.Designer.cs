@@ -12,8 +12,8 @@ using PersonalDiary.DAL.DataAccess;
 namespace PersonalDiary.DAL.Migrations
 {
     [DbContext(typeof(PersonalDiaryDbContext))]
-    [Migration("20221117201902_image")]
-    partial class image
+    [Migration("20221121102825_SecondInital")]
+    partial class SecondInital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,46 @@ namespace PersonalDiary.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("PersonalDiary.DAL.Entities.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Image_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Permalink_url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RecordId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Thumb_url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecordId")
+                        .IsUnique();
+
+                    b.ToTable("Images");
+                });
 
             modelBuilder.Entity("PersonalDiary.DAL.Entities.Record", b =>
                 {
@@ -36,9 +76,6 @@ namespace PersonalDiary.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImageBase64")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -47,9 +84,6 @@ namespace PersonalDiary.DAL.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -73,9 +107,6 @@ namespace PersonalDiary.DAL.Migrations
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -120,26 +151,20 @@ namespace PersonalDiary.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("5d84d296-e3c5-49e8-8c7b-5238950e42d5"),
-                            CreatedAt = new DateTime(2022, 11, 17, 20, 19, 1, 926, DateTimeKind.Utc).AddTicks(5113),
-                            Email = "tester@gmail.com",
-                            IsAdmin = true,
-                            IsDelete = false,
-                            Nickname = "admin",
-                            Password = "Password_1",
-                            Salt = "D;%yL9TS:5PalS/d",
-                            UpdatedAt = new DateTime(2022, 11, 17, 20, 19, 1, 926, DateTimeKind.Utc).AddTicks(5115)
-                        });
+            modelBuilder.Entity("PersonalDiary.DAL.Entities.Image", b =>
+                {
+                    b.HasOne("PersonalDiary.DAL.Entities.Record", "Record")
+                        .WithOne("Image")
+                        .HasForeignKey("PersonalDiary.DAL.Entities.Image", "RecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Record");
                 });
 
             modelBuilder.Entity("PersonalDiary.DAL.Entities.Record", b =>
@@ -162,6 +187,11 @@ namespace PersonalDiary.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PersonalDiary.DAL.Entities.Record", b =>
+                {
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("PersonalDiary.DAL.Entities.User", b =>

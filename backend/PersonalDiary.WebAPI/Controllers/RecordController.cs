@@ -37,10 +37,10 @@ namespace PersonalDiary.WebAPI.Controllers
             return Ok(records);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetRecordById(Guid id)
+        [HttpGet("id/{recordId}")]
+        public async Task<IActionResult> GetRecordById(Guid recordId)
         {
-            var record = await _recordService.GetRecordById(id);
+            var record = await _recordService.GetRecordById(recordId);
 
             return Ok(record);
         }
