@@ -1,6 +1,6 @@
 ﻿namespace PersonalDiary.Common.DTO.Image
 {
-    public class ImageStoregeOptions
+    public class ImageStorageOptions
     {
         public string AccessToken { get; set; } = null!;
     }

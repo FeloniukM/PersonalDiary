@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PersonalDiary.BLL.Exeptions;
+using PersonalDiary.BLL.Exceptions;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.Auth;
 using PersonalDiary.Common.DTO.User;

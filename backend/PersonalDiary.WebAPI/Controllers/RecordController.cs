@@ -62,11 +62,20 @@ namespace PersonalDiary.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("{date}")]
-        public async Task<IActionResult> GetByDate(DateTime date)
+        [HttpGet("date/{with}/{unto}")]
+        public async Task<IActionResult> GetByDate(DateTime with, DateTime unto)
         {
             var authorId = this.GetUserIdFromToken();
-            var records = await _recordService.GetRecordsByDate(date, authorId);
+            var records = await _recordService.GetRecordsByDate(with, unto, authorId);
+
+            return Ok(records);
+        }
+
+        [HttpGet("{content}")]
+        public async Task<IActionResult> GetByContent(string content)
+        {
+            var authorId = this.GetUserIdFromToken();
+            var records = await _recordService.GetRecordByContent(content, authorId);
 
             return Ok(records);
         }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PersonalDiary.BLL.Exeptions;
+using PersonalDiary.BLL.Exceptions;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.Record;
 using PersonalDiary.DAL.Entities;
@@ -101,11 +101,27 @@ namespace PersonalDiary.BLL.Service
             await _recordRepository.SaveChangesAsync();
         }
 
-        public async Task<List<RecordInfoDTO>> GetRecordsByDate(DateTime date, Guid authorId)
+        public async Task<List<RecordInfoDTO>> GetRecordsByDate(DateTime with, DateTime unto, Guid authorId)
         {
             var records = await _recordRepository
                 .Query()
-                .Where(x => x.AuthorId == authorId && x.CreatedAt == date)
+                .Where(x => x.AuthorId == authorId 
+                    && x.CreatedAt.Date <= unto.Date 
+                    && x.CreatedAt >= with.Date)
+                .Include(x => x.Image)
+                .ToListAsync();
+
+            return _mapper.Map<List<RecordInfoDTO>>(records);
+        }
+
+        public async Task<List<RecordInfoDTO>> GetRecordByContent(string content, Guid authorId)
+        {
+            var records = await _recordRepository
+                .Query()
+                .Where(x => x.AuthorId == authorId
+                    && (x.Title.Contains(content)
+                    || x.Text.Contains(content)))
+                .Include(x => x.Image)
                 .ToListAsync();
 
             return _mapper.Map<List<RecordInfoDTO>>(records);

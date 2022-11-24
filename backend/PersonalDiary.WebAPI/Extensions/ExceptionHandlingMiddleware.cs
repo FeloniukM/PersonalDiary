@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using PersonalDiary.BLL.Exeptions;
+using PersonalDiary.BLL.Exceptions;
 using System.Net;
 
 namespace PersonalDiary.WebAPI.Extensions
