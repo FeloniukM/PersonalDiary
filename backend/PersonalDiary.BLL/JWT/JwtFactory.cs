@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PersonalDiary.BLL.Exeptions;
+using PersonalDiary.BLL.Exceptions;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.Auth;
 using PersonalDiary.Common.Security;

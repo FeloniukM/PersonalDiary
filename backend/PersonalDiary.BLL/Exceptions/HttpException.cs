@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace PersonalDiary.BLL.Exeptions
+namespace PersonalDiary.BLL.Exceptions
 {
     public class HttpException : Exception
     {

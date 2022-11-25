@@ -18,8 +18,12 @@ export class ThreadComponent implements OnInit {
   public recordCreateModel: RecordCreateModel = { text: "", title: "", image: null}
   public image: File | null;
   public records: RecordInfoModel[] = [];
+
   private page: number = 1;
   public hiddenShowMore: boolean = true;
+  public dateWith: Date;
+  public dateUndo: Date;
+  public searchContent: string;
 
   constructor(private recordService: RecordService) { }
 
@@ -80,23 +84,34 @@ export class ThreadComponent implements OnInit {
 
   showMore() {
     this.page++;
-    this.recordService.getUserRecord(this.page).subscribe((data) => {
-      if(data.body) {
-        this.records = this.records.concat(data.body);
+    this.recordService.getUserRecord(this.page)
+      .subscribe((data) => {
+        if(data.body) {
+          this.records = this.records.concat(data.body);
 
-        if(data.body.length < 5) {
-          this.hiddenShowMore = true;
+          if(data.body.length < 5) {
+            this.hiddenShowMore = true;
+          }
         }
-      }
-    });
+      });
   }
 
-  sortByDate(event: any) {
-    this.recordService.searchRecordByDate(event.target.value)
+  sortByDate() {
+    this.recordService.searchRecordByDate(this.dateWith, this.dateUndo)
       .subscribe((data) => {
         if(data.body) {
           this.records = data.body;
         }
       })
+  }
+
+  sortByContent() {
+    this.recordService.searchRecordByContent(this.searchContent)
+      .subscribe((data) => {
+        console.log(data);
+        if(data.body) {
+          this.records = data.body;
+        }
+      });
   }
 }

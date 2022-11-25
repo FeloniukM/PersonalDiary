@@ -33,7 +33,11 @@ export class RecordService {
     return this.httpService.deleteRequest(`${this.routePrefix}/${recordId}`)
   }
 
-  public searchRecordByDate(date: Date): Observable<HttpResponse<RecordInfoModel[]>> {
-    return this.httpService.getFullRequest<RecordInfoModel[]>(`${this.routePrefix}/${date}`);
+  public searchRecordByDate(dateWith: Date, dateUndo: Date): Observable<HttpResponse<RecordInfoModel[]>> {
+    return this.httpService.getFullRequest<RecordInfoModel[]>(`${this.routePrefix}/date/${dateWith}/${dateUndo}`);
+  }
+
+  public searchRecordByContent(content: string): Observable<HttpResponse<RecordInfoModel[]>> {
+    return this.httpService.getFullRequest<RecordInfoModel[]>(`${this.routePrefix}/${content}`);
   }
 }

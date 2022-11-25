@@ -1,6 +1,7 @@
 ﻿using PersonalDiary.BLL;
 using PersonalDiary.Common.DTO.Image;
 using PersonalDiary.Common.Email;
+using PersonalDiary.DAL.Encryptions;
 using PersonalDiary.WebAPI.Extensions;
 
 namespace PersonalDiary.WebAPI
@@ -21,7 +22,8 @@ namespace PersonalDiary.WebAPI
             services.AddAuthorization();
             services.AddCustomService(Configuration);
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
-            services.Configure<ImageStoregeOptions>(Configuration.GetSection("ImageStoregeOptions"));
+            services.Configure<ImageStorageOptions>(Configuration.GetSection("ImageStorageOptions"));
+            services.Configure<EncryptionOptions>(Configuration.GetSection("EncryptionOptions"));
             services.ConfigureJwt(Configuration);
             services.AddAutoMapper();
             services.AddFluentValidation();

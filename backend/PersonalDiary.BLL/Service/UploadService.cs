@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using PersonalDiary.BLL.Exeptions;
+using PersonalDiary.BLL.Exceptions;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.Image;
 using System.Drawing;
@@ -12,12 +12,12 @@ namespace PersonalDiary.BLL.Service
 {
     internal class UploadService : IUploadService
     {
-        public readonly ImageStoregeOptions _imageStoregeOptions;
+        public readonly ImageStorageOptions _imageStorageOptions;
         private readonly HttpClient _httpClient;
 
-        public UploadService(IOptions<ImageStoregeOptions> option, HttpClient httpService)
+        public UploadService(IOptions<ImageStorageOptions> option, HttpClient httpService)
         {
-            _imageStoregeOptions = option.Value;
+            _imageStorageOptions = option.Value;
             _httpClient = httpService; 
         }
 
@@ -71,7 +71,7 @@ namespace PersonalDiary.BLL.Service
 
         private string BuildUrl(string url)
         {
-            return $"{url}?access_token={_imageStoregeOptions.AccessToken}";
+            return $"{url}?access_token={_imageStorageOptions.AccessToken}";
         }
 
         private async Task<Bitmap> ResizeImage(IFormFile file)

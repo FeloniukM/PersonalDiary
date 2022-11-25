@@ -8,7 +8,15 @@
     </div>
   </form>
   <div class="records" >
-    <input type="date" (change)="sortByDate($event)"/>
+    <div>
+      <input type="date" [(ngModel)]="dateWith"/>
+      <input type="date" [(ngModel)]="dateUndo"/>
+      <button (click)="sortByDate()">Search by date range</button>
+    </div>
+    <div>
+      <input type="text" [(ngModel)]="searchContent"/>
+      <button (click)="sortByContent()">Search by content</button>
+    </div>
     <div *ngFor="let record of records">
       <app-record [record]="record"></app-record>
     </div>
