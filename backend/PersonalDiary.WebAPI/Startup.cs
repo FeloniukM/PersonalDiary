@@ -24,6 +24,19 @@ namespace PersonalDiary.WebAPI
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.Configure<ImageStorageOptions>(Configuration.GetSection("ImageStorageOptions"));
             services.Configure<EncryptionOptions>(Configuration.GetSection("EncryptionOptions"));
+            services.AddDistributedSqlServerCache(options =>
+            {
+                options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
+                options.SchemaName = "dbo";
+                options.TableName = "SqlCache";
+            });
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+            });
             services.ConfigureJwt(Configuration);
             services.AddAutoMapper();
             services.AddFluentValidation();
@@ -51,6 +64,8 @@ namespace PersonalDiary.WebAPI
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalDiary.Common", "Per
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalDiary.DAL", "PersonalDiary.DAL\PersonalDiary.DAL.csproj", "{F94DE7EE-44BE-47FE-9C6F-8EFB49AAA9B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalDiary.BLL.Tests", "PersonalDiary.BLL.Tests\PersonalDiary.BLL.Tests.csproj", "{A20AD935-B7D1-45EE-9B57-67A8184CE1AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalDiary.BLL.Tests", "PersonalDiary.BLL.Tests\PersonalDiary.BLL.Tests.csproj", "{A20AD935-B7D1-45EE-9B57-67A8184CE1AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{098F17FF-FB71-4362-B6D2-AB761EF4CA76}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
