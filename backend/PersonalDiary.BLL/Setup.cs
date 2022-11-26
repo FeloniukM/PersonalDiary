@@ -23,6 +23,7 @@ namespace PersonalDiary.BLL
             service.AddScoped<IEmailService, EmailService>();
             service.AddScoped<IRecordService, RecordService>();
             service.AddScoped<IUploadService, UploadService>();
+            service.AddScoped<ICaptchaService, CaptchaService>();
             service.AddHttpClient();
 
             service.AddDbContext(configuration);

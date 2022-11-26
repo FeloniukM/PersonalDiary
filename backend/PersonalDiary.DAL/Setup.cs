@@ -21,6 +21,7 @@ namespace PersonalDiary.DAL
                 throw new ArgumentNullException(nameof(connectionString));
 
             services.AddDbContext<PersonalDiaryDbContext>(x => x.UseSqlServer(connectionString));
+            
         }
     }
 }

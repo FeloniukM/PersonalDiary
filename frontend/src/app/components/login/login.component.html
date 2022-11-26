@@ -21,5 +21,10 @@
       <button mat-raised-button color="accent">Sign In</button>
     </div>
   </form>
+  <div>
+    <img [src]="captcha" />
+    <input type="number" [(ngModel)]="captchaAnswer">
+    <button (click)="verifyCaptcha()">click</button>
+  </div>
 </div>
 
