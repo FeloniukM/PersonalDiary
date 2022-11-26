@@ -53,7 +53,10 @@ namespace PersonalDiary.BLL.Service
 
         public bool VerifyCapcha(HttpContext httpContext, int answer)
         {
-            return httpContext.Session.GetInt32("capcha") == answer;
+            var key = httpContext.Session.Keys.ToList();
+            var value = httpContext.Session.GetInt32("capcha");
+
+            return answer == value;
         }
 
         private string GenerateString(HttpContext httpContext)
@@ -64,8 +67,9 @@ namespace PersonalDiary.BLL.Service
             int b = random.Next(1, 100);
 
             int res = a + b;
-
+        
             httpContext.Session.SetInt32("capcha", res);
+            var key = httpContext.Session.Keys.ToList();
 
             return $"{a}+{b}";
         }

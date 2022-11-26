@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { UserLoginModel } from 'src/app/models/auth/user-login-model';
+import { Captcha } from 'src/app/models/image/captcha';
 import { AuthenticationService } from 'src/app/services/auth.service';
+import { CaptchaService } from 'src/app/services/captcha.service';
 
 @Component({
   selector: 'app-login',
@@ -14,16 +17,27 @@ export class LoginComponent implements OnInit, OnDestroy {
   public loginForm: FormGroup;
   public emailControl: FormControl;
   public passwordControl: FormControl;
+  public captcha: any;
+  public captchaAnswer: number;
 
   public userLoginModel: UserLoginModel = { email: "", password: ""};
   
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private authService: AuthenticationService, private router: Router) {
-    
-  }
+  constructor(private authService: AuthenticationService, 
+    private router: Router,
+    private captchaService: CaptchaService,
+    private sanitizer: DomSanitizer
+    ) { }
 
   ngOnInit(): void {
+    this.captchaService.getCaptcha().subscribe((data) => {
+      if(data.body) {
+        this.captcha = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+        + data.body.fileContents);
+      }
+    });
+
     this.emailControl = new FormControl(this.userLoginModel.email, [
       Validators.required,
       Validators.email,
@@ -57,6 +71,12 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.router.navigate(['thread']);
         });
     }
+  }
+
+  public verifyCaptcha() {  
+    this.captchaService.verifyCaptcha(this.captchaAnswer).subscribe((data) => {
+      
+    });
   }
 
 }
