@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RecordInfoModel } from 'src/app/models/record/record-info-model';
 import { RecordService } from 'src/app/services/record.service';
 
@@ -10,6 +9,7 @@ import { RecordService } from 'src/app/services/record.service';
 })
 export class RecordComponent implements OnInit {
   @Input() record: RecordInfoModel;
+  @Output() isDeleteRecord: EventEmitter<boolean> = new EventEmitter(false);
 
   constructor(private recordService: RecordService) { }
 
@@ -17,7 +17,10 @@ export class RecordComponent implements OnInit {
   }
 
   remove() {
-    this.recordService.deleteRecord(this.record.id).subscribe();
+    this.recordService.deleteRecord(this.record.id)
+    .subscribe(() => {
+      this.isDeleteRecord.next(true);
+    });
   }
 
   canBeDeleted(): boolean {

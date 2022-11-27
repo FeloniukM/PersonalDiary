@@ -114,4 +114,11 @@ export class ThreadComponent implements OnInit {
         }
       });
   }
+
+  deleteRecord(id: string, event: boolean) {
+    if(event) {
+      let index = this.records.findIndex(x => x.id == id);
+      this.records.splice(index, 1);
+    }
+  }
 }
