@@ -24,6 +24,7 @@ namespace PersonalDiary.BLL
             service.AddScoped<IRecordService, RecordService>();
             service.AddScoped<IUploadService, UploadService>();
             service.AddScoped<ICaptchaService, CaptchaService>();
+            service.AddSingleton<IProceduresService, ProceduresService>();
             service.AddHttpClient();
 
             service.AddDbContext(configuration);

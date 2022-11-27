@@ -62,5 +62,6 @@ namespace PersonalDiary.DAL.DataAccess
         {
             return await _dbContext.SaveChangesAsync();
         }
+        
     }
 }

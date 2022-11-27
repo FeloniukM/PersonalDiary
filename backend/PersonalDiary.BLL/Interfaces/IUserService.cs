@@ -8,5 +8,6 @@ namespace PersonalDiary.BLL.Interfaces
         Task InviteUser(UserEmailDTO userInviteDTO, Guid adminId);
         Task<UserInfoDTO> GetUserInfo(Guid userId);
         Task ChangeUserRole(UserEmailDTO userEmailDTO, Guid adminId);
+        Task DeleteUser(Guid userId);
     }
 }

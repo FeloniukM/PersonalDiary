@@ -1,4 +1,5 @@
 ﻿using PersonalDiary.BLL;
+using PersonalDiary.BLL.Service;
 using PersonalDiary.Common.DTO.Image;
 using PersonalDiary.Common.Email;
 using PersonalDiary.DAL.Encryptions;
@@ -36,6 +37,7 @@ namespace PersonalDiary.WebAPI
                 options.Cookie.IsEssential = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
             });
+            services.AddHostedService<TimedHostedService>();
             services.ConfigureJwt(Configuration);
             services.AddAutoMapper();
             services.AddFluentValidation();
