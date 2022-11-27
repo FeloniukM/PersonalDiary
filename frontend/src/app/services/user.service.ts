@@ -24,4 +24,8 @@ export class UserService {
         return this.httpService.putRequest(`${this.routePrefix}`, inviteUserModel);
     }
 
+    public deleteUserAccount(): Observable<HttpResponse<void>> {
+        return this.httpService.deleteFullRequest<void>(this.routePrefix);
+    }
+
 }

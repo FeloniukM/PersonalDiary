@@ -9,7 +9,6 @@ namespace PersonalDiary.BLL.Service
 {
     public class TimedHostedService : IHostedService, IDisposable
     {
-        //private readonly PersonalDiaryDbContext _context;
         private readonly IProceduresService _proceduresService;
         private readonly ILogger<TimedHostedService> _logger;
         private Timer? _timer = null;
@@ -18,7 +17,6 @@ namespace PersonalDiary.BLL.Service
         {
             _logger = logger;
             _proceduresService = proceduresService;
-            //_context = factory.CreateScope().ServiceProvider.GetRequiredService<PersonalDiaryDbContext>();
         }
 
         public Task StartAsync(CancellationToken stoppingToken)
@@ -26,7 +24,7 @@ namespace PersonalDiary.BLL.Service
             _logger.LogInformation("Timed Hosted Service running.");
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromSeconds(5));
+                TimeSpan.FromMinutes(30));
 
             return Task.CompletedTask;
         }

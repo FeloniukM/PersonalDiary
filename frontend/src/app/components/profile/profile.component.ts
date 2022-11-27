@@ -70,4 +70,15 @@ export class ProfileComponent implements OnInit {
   turnBack() {
     this.router.navigate(['thread']);
   }
+
+  deleteUserAccount() {
+    this.userService.deleteUserAccount()
+      .subscribe((data) => {
+        if(data.ok) {
+          alert("The account has been marked as deleted, you can restore the account within two days. To do this, log in again. Otherwise, the account will be deleted");
+          localStorage.clear();
+          window.location.reload();
+        }
+      })
+  }
 }
