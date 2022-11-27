@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   public passwordControl: FormControl;
   public captcha: any;
   public captchaAnswer: number;
+  public hide: boolean = true;
 
   public userLoginModel: UserLoginModel = { email: "", password: ""};
   

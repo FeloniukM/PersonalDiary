@@ -1,19 +1,50 @@
-<div class="back">
-  <form class="login-form" [formGroup]="registerForm" novalidate (ngSubmit)="signUp()">
-    <mat-form-field appearance="fill">
-      <mat-label>Nickname</mat-label>
-      <input type="text" matInput placeholder="Nickname" #nickname maxlength=30 formControlName="nameControl" required>
-      <mat-error *ngIf="registerForm.controls['nameControl'].invalid && registerForm.controls['nameControl'].touched">Invalid email</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input type="email" matInput placeholder="Your email" #email maxlength=50 formControlName="emailControl" required>
-      <mat-error *ngIf="registerForm.controls['emailControl'].invalid && registerForm.controls['emailControl'].touched">Invalid email</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input type="password" matInput  #password maxlength=50 formControlName="passwordControl" required>
-    </mat-form-field>
-    <button mat-raised-button color="accent">SignUp</button>
-  </form>
+<div class="container">
+  <div class="login">
+    <div class="login-title">
+      <i class="fa-sharp fa-solid fa-circle-user fa-2xl"></i>
+      <span class="login-title-welcome">Create account!</span>
+    </div>
+    <form class="login-form" [formGroup]="registerForm" (ngSubmit)="signUp()">
+      <mat-form-field appearance="legacy">
+        <mat-label>Nickname</mat-label>
+        <input type="text" matInput [formControl]="nameControl" placeholder="Name" />
+        <mat-error *ngIf="emailControl.hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="legacy">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput [formControl]="emailControl" placeholder="Ex. pat@example.com" />
+        <mat-error *ngIf="emailControl.hasError('email') && !emailControl.hasError('required')">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="emailControl.hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="legacy">
+        <mat-label>Password</mat-label>
+        <input [type]="hide ? 'password' : 'text'" matInput [formControl]="passwordControl" placeholder="Password"/>
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="passwordControl.hasError('required')">
+          Password is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <button mat-flat-button color="primary">Register</button>
+    </form>
+    <div class="captcha">
+      <img [src]="captcha" />
+      <mat-form-field appearance="legacy">
+        <mat-label>Answer captcha</mat-label>
+        <input type="number" matInput [(ngModel)]="captchaAnswer"/>
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="verifyCaptcha()">Verify</button>
+    </div>
+  </div>
+  <div class="footer">
+    <span>©2022 PerosonalDiary | Welcome!</span>
+  </div>
 </div>
+

@@ -1,30 +1,43 @@
 <div class="container">
-  <div>
-    <h1 class="title">PerosonalDiary</h1>
-  </div>
-  <form [formGroup]="loginForm" class="form-container" (ngSubmit)="signIn()">
-    <div class="text-container">
-      <h4 class="login-title">Log In</h4>
-      <mat-form-field appearance="fill">
+  <div class="login">
+    <div class="login-title">
+      <i class="logout fa-solid fa-right-from-bracket fa-xl"></i>
+      <span class="login-title-welcome">Welcome!</span>
+      <span>Sign in to your account</span>
+    </div>
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="signIn()">
+      <mat-form-field appearance="legacy">
         <mat-label>Email</mat-label>
-        <input type="email" matInput placeholder="Your email" #email maxlength=50 formControlName="emailControl" required>
-        <mat-error *ngIf="loginForm.controls['emailControl'].invalid && loginForm.controls['emailControl'].touched">Invalid email</mat-error>
+        <input type="email" matInput [formControl]="emailControl" placeholder="Ex. pat@example.com" />
+        <mat-error *ngIf="emailControl.hasError('email') && !emailControl.hasError('required')">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="emailControl.hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
       </mat-form-field>
-    </div>
-    <div class="password-container">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="legacy">
         <mat-label>Password</mat-label>
-        <input type="password" matInput  #password maxlength=50 formControlName="passwordControl" required>
+        <input [type]="hide ? 'password' : 'text'" matInput [formControl]="passwordControl" placeholder="Password"/>
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="passwordControl.hasError('required')">
+          Password is <strong>required</strong>
+        </mat-error>
       </mat-form-field>
+      <button mat-flat-button color="primary">Login</button>
+    </form>
+    <div class="captcha">
+      <img [src]="captcha" />
+      <mat-form-field appearance="legacy">
+        <mat-label>Answer captcha</mat-label>
+        <input type="number" matInput [(ngModel)]="captchaAnswer"/>
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="verifyCaptcha()">Verify</button>
     </div>
-    <div class="button-container">
-      <button mat-raised-button color="accent">Sign In</button>
-    </div>
-  </form>
-  <div>
-    <img [src]="captcha" />
-    <input type="number" [(ngModel)]="captchaAnswer">
-    <button (click)="verifyCaptcha()">click</button>
+  </div>
+  <div class="footer">
+    <span>©2022 PerosonalDiary | Welcome!</span>
   </div>
 </div>
-
