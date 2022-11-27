@@ -122,27 +122,31 @@ namespace PersonalDiary.BLL.Tests.ServicesTest
         [Fact]
         public async Task GetRecordById_WhenRecordExist_ThenGetRecord()
         {
-            var record = new Record()
+            var records = new List<Record>()
             {
-                Id = Guid.NewGuid(),
-                AuthorId = Guid.NewGuid(),
-                Text = "SomeText",
-                Title = "SomeTitle",
-                CreatedAt = DateTime.Now,
-                Author = new User()
+                new Record()
+                {
+                    Id = Guid.NewGuid(),
+                    AuthorId = Guid.NewGuid(),
+                    Text = "SomeText",
+                    Title = "SomeTitle",
+                    CreatedAt = DateTime.Now,
+                    Author = new User()
+                }
             };
+            var queryable = records.BuildMock();
             var recordInfoDTO = new RecordInfoDTO()
             {
-                Id = record.Id,
+                Id = records.First().Id,
                 Text = "SomeText",
                 Title = "SomeTitle",
                 CreatedAt = DateTime.Now
             };
 
-            A.CallTo(() => _recordRepository.GetByKeyAsync(record.Id)).Returns(record);
-            A.CallTo(() => _mapper.Map<RecordInfoDTO>(record)).Returns(recordInfoDTO);
+            A.CallTo(() => _recordRepository.Query()).Returns(queryable);
+            A.CallTo(() => _mapper.Map<RecordInfoDTO>(records.First())).Returns(recordInfoDTO);
 
-            var result = await _recordService.GetRecordById(record.Id);
+            var result = await _recordService.GetRecordById(records.First().Id);
 
             Assert.NotNull(result);
             Assert.Equal(recordInfoDTO, result);

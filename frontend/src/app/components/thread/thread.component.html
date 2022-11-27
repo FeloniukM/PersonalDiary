@@ -18,7 +18,7 @@
       <button (click)="sortByContent()">Search by content</button>
     </div>
     <div *ngFor="let record of records">
-      <app-record [record]="record"></app-record>
+      <app-record [record]="record" (isDeleteRecord)="deleteRecord(record.id, $event)"></app-record>
     </div>
     <button [hidden]="hiddenShowMore" (click)="showMore()">Show more</button>
   </div>
