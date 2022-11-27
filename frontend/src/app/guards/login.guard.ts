@@ -25,7 +25,7 @@ export class LoginGuard implements CanActivate {
         this.key = params['key'] as string;
       });
     if (this.authService.areTokensExist() && !this.key) {
-      this.router.navigate(['/main']);
+      this.router.navigate(['/thread']);
       // this.notificationService.info('You are already logged in', 'Reminding');
       return false;
     }

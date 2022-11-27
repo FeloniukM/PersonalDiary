@@ -13,7 +13,7 @@ namespace PersonalDiary.BLL.Service
             string id = GenerateString(httpContext);
 
             int textSize = 10;
-            var width = 225;
+            var width = 125;
             var height = 20;
 
             string textToWrite = id;

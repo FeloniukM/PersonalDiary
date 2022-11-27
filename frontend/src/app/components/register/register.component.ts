@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { UserRegisterModel } from 'src/app/models/auth/user-register-model';
 import { AuthenticationService } from 'src/app/services/auth.service';
+import { CaptchaService } from 'src/app/services/captcha.service';
 
 @Component({
   selector: 'app-register',
@@ -15,15 +17,29 @@ export class RegisterComponent implements OnInit {
   public nameControl: FormControl;
   public emailControl: FormControl;
   public passwordControl: FormControl;
+  public hide: boolean = true;
+  public captcha: any;
+  public captchaAnswer: number;
 
   public userRegisterModel: UserRegisterModel = { nickname: "", email: "", password: ""};
   
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private authService: AuthenticationService, private router: Router) {
+  constructor(
+    private authService: AuthenticationService, 
+    private router: Router,
+    private captchaService: CaptchaService,
+    private sanitizer: DomSanitizer) {
   }
 
   ngOnInit(): void {
+    this.captchaService.getCaptcha().subscribe((data) => {
+      if(data.body) {
+        this.captcha = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+        + data.body.fileContents);
+      }
+    });
+
     this.emailControl = new FormControl(this.userRegisterModel.email, [
       Validators.required,
       Validators.email
@@ -57,10 +73,16 @@ export class RegisterComponent implements OnInit {
         email: this.registerForm.get('emailControl')?.value
       })
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((data) => {
-        this.router.navigate(['main']);
+      .subscribe(() => {
+        this.router.navigate(['thread']);
       }); 
     }
+  }
+
+  public verifyCaptcha() {  
+    this.captchaService.verifyCaptcha(this.captchaAnswer).subscribe((data) => {
+      
+    });
   }
 
 }

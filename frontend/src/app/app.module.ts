@@ -11,7 +11,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegisterComponent } from './components/register/register.component';
 import { ThreadComponent } from './components/thread/thread.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { AuthComponent } from './components/auth/auth.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { RecordComponent } from './components/record/record.component';
 import { MainComponent } from './components/main/main.component';
@@ -23,7 +22,6 @@ import { MainComponent } from './components/main/main.component';
     RegisterComponent,
     ThreadComponent,
     ProfileComponent,
-    AuthComponent,
     RecordComponent,
     MainComponent
   ],
