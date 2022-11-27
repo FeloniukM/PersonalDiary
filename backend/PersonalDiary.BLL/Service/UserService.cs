@@ -92,5 +92,16 @@ namespace PersonalDiary.BLL.Service
             await _userRepository.UpdateAsync(user);
             await _userRepository.SaveChangesAsync();
         }
+
+        public async Task DeleteUser(Guid userId)
+        {
+            var user = await _userRepository.GetByKeyAsync(userId);
+
+            user.WhenDeleted = DateTime.Now.AddDays(2);
+            user.IsDelete = true;
+
+            await _userRepository.UpdateAsync(user);
+            await _userRepository.SaveChangesAsync();
+        }
     }
 }

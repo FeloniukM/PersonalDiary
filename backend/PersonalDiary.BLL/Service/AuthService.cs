@@ -44,6 +44,14 @@ namespace PersonalDiary.BLL.Service
                 throw new HttpException(System.Net.HttpStatusCode.BadRequest, "Password not valid");
             }
 
+            if (userEntity.IsDelete == true)
+            {
+                userEntity.IsDelete = false;
+
+                await _userRepository.UpdateAsync(userEntity);
+                await _userRepository.SaveChangesAsync();
+            }
+
             var token = await GenerateAccessToken(userEntity.Id, userEntity.Nickname, userEntity.Email);
             var user = _mapper.Map<UserDTO>(userEntity);
 

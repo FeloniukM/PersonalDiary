@@ -43,5 +43,14 @@ namespace PersonalDiary.WebAPI.Controllers
 
             return Ok();
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser()
+        {
+            var userId = this.GetUserIdFromToken();
+            await _userService.DeleteUser(userId);
+
+            return NoContent();
+        }
     }
 }
