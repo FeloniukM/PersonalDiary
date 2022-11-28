@@ -50,7 +50,7 @@ namespace PersonalDiary.BLL.Service
             {
                 ToEmail = userInviteDTO.Email,
                 Subject = "Welcom to our service - \"PersonalDiary\"",
-                Body = "http://localhost:4200/auth/register"
+                Body = "http://localhost:4200/register"
             };
 
             await _emailService.SendEmailAsync(request, null);

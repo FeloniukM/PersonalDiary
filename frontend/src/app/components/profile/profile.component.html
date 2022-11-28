@@ -1,31 +1,45 @@
-<div class="container">
-  <div>
-    <label class="back" (click)="turnBack()">turn back</label>
-  </div>
-  <div class="profile">
-    <div *ngIf="userInfoModel && userInfoModel.isAdmin">
-      <form class="invite-form" [formGroup]="inviteFormGroup" novalidate (ngSubmit)="invite()">
-        <div class="invite">
-          <label class="label">Request by email:</label>
-          <input class="email-input" type="email" formControlName="inviteEmailControl">
-        </div>
-        <i class="send-icon fa-regular fa-paper-plane fa-xl" (click)="invite()"></i>
-      </form>
+<div class="profile">
+  <div class="user-info" *ngIf="userInfoModel">
+    <div class="about-user">
       <div>
-        <form class="invite-form" [formGroup]="changeFormGroup" novalidate (ngSubmit)="changeRole()">
-          <div class="invite">
-            <label class="label">Change role by email:</label>
-            <input class="email-input" type="email" formControlName="changeEmailControl">
-          </div>
-          <i class="send-icon fa-regular fa-paper-plane fa-xl" (click)="changeRole()"></i>
-        </form>
+        <span>Nickname:</span>
+        <span>Date of joining:</span>
+        <span>Email:</span>
+      </div>
+      <div>
+        <span>{{userInfoModel.nickname}}</span>
+        <span>{{userInfoModel.createdAt | date:'d/M/yy, h:mm a'}}</span>
+        <span>{{userInfoModel.email}}</span>
       </div>
     </div>
-    <div *ngIf="userInfoModel">
-      <span>{{userInfoModel.nickname}}</span>
-      <span>{{userInfoModel.createdAt}}</span>
-      <span>{{userInfoModel.email}}</span>
-      <button (click)="deleteUserAccount()">delete account</button>
-    </div>
+    <button class="delete" mat-flat-button color="warn" (click)="deleteUserAccount()">Delete account</button>
+  </div>
+  <div class="admin-panel" *ngIf="userInfoModel && userInfoModel.isAdmin">
+    <form [formGroup]="inviteFormGroup" novalidate (ngSubmit)="invite()">
+      <mat-form-field appearance="legacy">
+        <mat-label>Send an invitation by email</mat-label>
+        <input type="email" matInput [formControl]="inviteEmailControl" placeholder="Ex. pat@example.com" />
+        <mat-error *ngIf="inviteEmailControl.hasError('email') && !inviteEmailControl.hasError('required')">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="inviteEmailControl.hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <button class="form-button" mat-flat-button color="accent">Invite</button>
+    </form>
+    <form [formGroup]="changeFormGroup" novalidate (ngSubmit)="changeRole()">
+      <mat-form-field appearance="legacy">
+        <mat-label>Change role by email</mat-label>
+        <input type="email" matInput [formControl]="changeEmailControl" placeholder="Ex. pat@example.com" />
+        <mat-error *ngIf="changeEmailControl.hasError('email') && !changeEmailControl.hasError('required')">
+          Please enter a valid email address
+        </mat-error>
+        <mat-error *ngIf="changeEmailControl.hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <button class="form-button" mat-flat-button color="accent">Change role</button>
+    </form>
   </div>
 </div>

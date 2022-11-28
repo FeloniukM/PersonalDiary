@@ -14,6 +14,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { RecordComponent } from './components/record/record.component';
 import { MainComponent } from './components/main/main.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,12 @@ import { MainComponent } from './components/main/main.component';
     
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { 
+      provide: HTTP_INTERCEPTORS, 
+      useClass: JwtInterceptor, 
+      multi: true,
+    },
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })
