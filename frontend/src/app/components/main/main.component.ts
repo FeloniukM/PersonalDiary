@@ -25,4 +25,8 @@ export class MainComponent implements OnInit {
     localStorage.removeItem('refreshToken');
     window.location.reload();
   }
+
+  openThread() {
+    this.router.navigate(['thread']);
+  }
 }
