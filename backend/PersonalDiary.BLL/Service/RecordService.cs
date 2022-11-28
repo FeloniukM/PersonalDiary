@@ -116,13 +116,15 @@ namespace PersonalDiary.BLL.Service
 
         public async Task<List<RecordInfoDTO>> GetRecordByContent(string content, Guid authorId)
         {
-            var records = await _recordRepository
+            var allRecords = await _recordRepository
                 .Query()
-                .Where(x => x.AuthorId == authorId
-                    && (x.Title.Contains(content)
-                    || x.Text.Contains(content)))
-                .Include(x => x.Image)
+                .Where(x => x.AuthorId == authorId)
                 .ToListAsync();
+
+            var records = allRecords
+                .Where(x => x.Title.ToLower().Contains(content.ToLower()) 
+                    || x.Text.ToLower().Contains(content.ToLower()))
+                .ToList();
 
             return _mapper.Map<List<RecordInfoDTO>>(records);
         }

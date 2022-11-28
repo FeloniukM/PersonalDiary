@@ -37,6 +37,9 @@ namespace PersonalDiary.WebAPI.Extensions
                     case ArgumentNullException ex:
                         await HandleArgumentNullException(context, ex);
                         break;
+                    default:
+                        await CreateExceptionAsync(context, HttpStatusCode.InternalServerError);
+                        break;
                 }
             }
         }
