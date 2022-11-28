@@ -119,6 +119,7 @@ namespace PersonalDiary.BLL.Service
             var allRecords = await _recordRepository
                 .Query()
                 .Where(x => x.AuthorId == authorId)
+                .Include(x => x.Image)
                 .ToListAsync();
 
             var records = allRecords

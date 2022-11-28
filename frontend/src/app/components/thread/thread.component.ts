@@ -14,6 +14,7 @@ export class ThreadComponent implements OnInit {
   public titleControl: FormControl;
   public textControl: FormControl;
   public fileControl: FormControl;
+  public period: FormGroup
 
   public recordCreateModel: RecordCreateModel = { text: "", title: "", image: null}
   public image: File | null;
@@ -21,8 +22,6 @@ export class ThreadComponent implements OnInit {
 
   private page: number = 1;
   public hiddenShowMore: boolean = true;
-  public dateWith: Date;
-  public dateUndo: Date;
   public searchContent: string;
 
   constructor(private recordService: RecordService) { }
@@ -55,6 +54,15 @@ export class ThreadComponent implements OnInit {
       titleControl: this.titleControl,
       textControl: this.textControl,
       fileControl: this.fileControl
+    });
+
+    const today = new Date();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+
+    this.period = new FormGroup({
+      start: new FormControl(new Date(year, month, today.getDay())),
+      end: new FormControl(new Date(year, month, today.getDay() + 2)),
     });
   }
 
@@ -97,7 +105,9 @@ export class ThreadComponent implements OnInit {
   }
 
   sortByDate() {
-    this.recordService.searchRecordByDate(this.dateWith, this.dateUndo)
+    this.recordService.searchRecordByDate(
+      this.period.get('start')?.value, 
+      this.period.get('end')?.value)
       .subscribe((data) => {
         if(data.body) {
           this.records = data.body;

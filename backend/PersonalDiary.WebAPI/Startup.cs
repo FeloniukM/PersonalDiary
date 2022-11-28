@@ -2,7 +2,6 @@
 using PersonalDiary.BLL.Service;
 using PersonalDiary.Common.DTO.Image;
 using PersonalDiary.Common.Email;
-using PersonalDiary.DAL.Encryptions;
 using PersonalDiary.WebAPI.Extensions;
 
 namespace PersonalDiary.WebAPI
@@ -24,7 +23,6 @@ namespace PersonalDiary.WebAPI
             services.AddCustomService(Configuration);
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.Configure<ImageStorageOptions>(Configuration.GetSection("ImageStorageOptions"));
-            services.Configure<EncryptionOptions>(Configuration.GetSection("EncryptionOptions"));
             services.AddDistributedSqlServerCache(options =>
             {
                 options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");

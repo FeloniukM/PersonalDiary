@@ -1,24 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.DataEncryption;
 using Microsoft.EntityFrameworkCore.DataEncryption.Providers;
-using Microsoft.Extensions.Options;
 using PersonalDiary.DAL.Configuration;
-using PersonalDiary.DAL.Encryptions;
 using PersonalDiary.DAL.Entities;
 
 namespace PersonalDiary.DAL.DataAccess
 {
     public class PersonalDiaryDbContext : DbContext
     {
+        //The key is not stored that way. Only for the time of development
         private readonly byte[] _encryptionKey = new byte[16] { 123, 12, 124, 15, 14, 123, 46, 146, 252, 12, 67, 23, 53, 13, 14, 15 };
         private readonly byte[] _encryptionIV = new byte[16] { 124, 12, 123, 15, 14, 123, 46, 146, 252, 12, 67, 23, 53, 13, 14, 15 };
-        //private readonly EncryptionOptions _encryptionOptions;
         private readonly IEncryptionProvider _provider;
 
         public PersonalDiaryDbContext(DbContextOptions<PersonalDiaryDbContext> options) : base(options)
         {
-            //_encryptionOptions = encOptions.Value;
-
             _provider = new AesProvider(
                 _encryptionKey,
                 _encryptionIV,

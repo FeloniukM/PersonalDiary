@@ -46,7 +46,7 @@
 }
 
 .records {
-    margin-top: 40px;
+    margin-top: 30px;
 }
 
 textarea:focus, input:focus{
@@ -59,4 +59,34 @@ textarea:focus, input:focus{
     padding: 5px 10px;
     cursor: pointer;
     border-radius: 5px;
+}
+
+.search {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.search-content {
+    display: flex;
+    align-items: center;
+}
+
+.search-content :last-child {
+    margin-left: 15px;
+}
+
+.show {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+::ng-deep .mat-form-field-infix {
+    display: flex;
+    align-items: center;
+}
+
+::ng-deep .mat-datepicker-toggle > button {
+    color: gray;
 }
