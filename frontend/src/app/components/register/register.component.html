@@ -32,9 +32,9 @@
           Password is <strong>required</strong>
         </mat-error>
       </mat-form-field>
-      <button mat-flat-button color="primary">Register</button>
+      <button mat-flat-button [ngClass]="{'disable-click': !hideCaptcha}" color="primary">Register</button>
     </form>
-    <div class="captcha">
+    <div class="captcha" [ngClass]="{'visibility': hideCaptcha}">
       <img [src]="captcha" />
       <mat-form-field appearance="legacy">
         <mat-label>Answer captcha</mat-label>
@@ -47,4 +47,3 @@
     <span>©2022 PerosonalDiary | Welcome!</span>
   </div>
 </div>
-

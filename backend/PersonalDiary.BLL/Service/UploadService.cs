@@ -56,7 +56,7 @@ namespace PersonalDiary.BLL.Service
 
             var body = await responce.Content.ReadFromJsonAsync<Image>();
 
-            if(body == null)
+            if (body == null)
             {
                 throw new HttpException(System.Net.HttpStatusCode.BadRequest, "Response body empty");
             }

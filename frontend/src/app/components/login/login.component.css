@@ -67,3 +67,14 @@
     margin-top: 30px;
     font-weight: 500;
 }
+
+.disable-click {
+    pointer-events: none;
+    cursor: default;
+    background-color: gray;
+    opacity: 0.5;
+}
+
+.visibility {
+    visibility: hidden;
+}

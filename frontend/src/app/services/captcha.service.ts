@@ -10,7 +10,6 @@ import { HttpInternalService } from './http-internal.service';
 export class CaptchaService {
   public routePrefix = '/api/captcha';
 
-
   constructor(private httpService: HttpInternalService) { }
   
   public getCaptcha(): Observable<HttpResponse<Captcha>> {

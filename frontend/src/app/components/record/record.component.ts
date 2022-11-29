@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { RecordInfoModel } from 'src/app/models/record/record-info-model';
 import { RecordService } from 'src/app/services/record.service';
 
@@ -7,17 +8,24 @@ import { RecordService } from 'src/app/services/record.service';
   templateUrl: './record.component.html',
   styleUrls: ['./record.component.css']
 })
-export class RecordComponent implements OnInit {
+export class RecordComponent implements OnInit, OnDestroy {
   @Input() record: RecordInfoModel;
   @Output() isDeleteRecord: EventEmitter<boolean> = new EventEmitter(false);
 
+  private unsubscribe$ = new Subject<void>();
+
   constructor(private recordService: RecordService) { }
 
-  ngOnInit() {
+  ngOnInit(): void { }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
-  remove() {
+  remove(): void {
     this.recordService.deleteRecord(this.record.id)
+    .pipe(takeUntil(this.unsubscribe$))
     .subscribe(() => {
       this.isDeleteRecord.next(true);
     });
@@ -29,4 +37,5 @@ export class RecordComponent implements OnInit {
 
     return ((currentDate.getTime() - createdAt.getTime()) / (1000 * 3600 * 24)) > 2;
   }
+
 }

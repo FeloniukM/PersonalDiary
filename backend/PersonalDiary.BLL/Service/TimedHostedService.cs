@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PersonalDiary.BLL.Interfaces;
-using PersonalDiary.DAL.DataAccess;
 
 namespace PersonalDiary.BLL.Service
 {
