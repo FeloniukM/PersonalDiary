@@ -60,7 +60,7 @@ namespace PersonalDiary.BLL.Service
         {
             var user = await _userRepository.GetByKeyAsync(userId);
 
-            if(user == null)
+            if (user == null)
             {
                 throw new HttpException(System.Net.HttpStatusCode.NotFound, "User was not found");
             }
@@ -82,7 +82,7 @@ namespace PersonalDiary.BLL.Service
                 .Where(x => x.Email == userInviteDTO.Email)
                 .FirstOrDefaultAsync();
 
-            if(user == null)
+            if (user == null)
             {
                 throw new HttpException(System.Net.HttpStatusCode.NotFound, "User was not found");
             }

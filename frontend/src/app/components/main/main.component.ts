@@ -8,25 +8,27 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class MainComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, 
+    private route: ActivatedRoute
+  ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (!this.route.snapshot.firstChild) {
       this.router.navigate(['thread'], { relativeTo: this.route, replaceUrl: true });
     }
   }
 
-  openProfile() {
+  openProfile(): void {
     this.router.navigate(['profile']);
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     window.location.reload();
   }
 
-  openThread() {
+  openThread(): void {
     this.router.navigate(['thread']);
   }
 }

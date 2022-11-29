@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 import { RecordCreateModel } from 'src/app/models/record/record-create-model';
 import { RecordInfoModel } from 'src/app/models/record/record-info-model';
 import { RecordService } from 'src/app/services/record.service';
@@ -9,7 +10,7 @@ import { RecordService } from 'src/app/services/record.service';
   templateUrl: './thread.component.html',
   styleUrls: ['./thread.component.css']
 })
-export class ThreadComponent implements OnInit {
+export class ThreadComponent implements OnInit, OnDestroy {
   public recordForm: FormGroup;
   public titleControl: FormControl;
   public textControl: FormControl;
@@ -24,10 +25,14 @@ export class ThreadComponent implements OnInit {
   public hiddenShowMore: boolean = true;
   public searchContent: string;
 
+  private unsubscribe$ = new Subject<void>();
+
   constructor(private recordService: RecordService) { }
 
-  ngOnInit() {
-    this.recordService.getUserRecord(this.page).subscribe((data) => {
+  ngOnInit(): void {
+    this.recordService.getUserRecord(this.page)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data) => {
       if(data.body) {
         this.records = data.body;
 
@@ -66,13 +71,20 @@ export class ThreadComponent implements OnInit {
     });
   }
 
-  addRecord() {
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  addRecord(): void {
     if(this.recordForm.valid) {
       this.recordService.addRecord({ 
         title: this.recordForm.get('titleControl')?.value,
         text: this.recordForm.get('textControl')?.value,
         image: this.image
-      }).subscribe((data) => { 
+      })
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data) => { 
         if(data.body) {
           this.recordForm.reset();
           this.records.unshift(data.body);
@@ -81,7 +93,7 @@ export class ThreadComponent implements OnInit {
     }
   }
 
-  handleFileSelect(evt: any) {
+  handleFileSelect(evt: any): void {
     var files = evt.target.files;
     var file = files[0];
   
@@ -90,45 +102,49 @@ export class ThreadComponent implements OnInit {
     }
   }
 
-  showMore() {
+  showMore(): void {
     this.page++;
-    this.recordService.getUserRecord(this.page)
-      .subscribe((data) => {
-        if(data.body) {
-          this.records = this.records.concat(data.body);
 
-          if(data.body.length < 5) {
-            this.hiddenShowMore = true;
-          }
+    this.recordService.getUserRecord(this.page)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data) => {
+      if(data.body) {
+        this.records = this.records.concat(data.body);
+
+        if(data.body.length < 5) {
+          this.hiddenShowMore = true;
         }
-      });
+      }
+    });
   }
 
-  sortByDate() {
+  sortByDate(): void {
     this.recordService.searchRecordByDate(
       this.period.get('start')?.value, 
       this.period.get('end')?.value)
-      .subscribe((data) => {
-        if(data.body) {
-          this.records = data.body;
-        }
-      })
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data) => {
+      if(data.body) {
+        this.records = data.body;
+      }
+    })
   }
 
-  sortByContent() {
+  sortByContent(): void {
     this.recordService.searchRecordByContent(this.searchContent)
-      .subscribe((data) => {
-        console.log(data);
-        if(data.body) {
-          this.records = data.body;
-        }
-      });
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data) => {
+      if(data.body) {
+        this.records = data.body;
+      }
+    });
   }
 
-  deleteRecord(id: string, event: boolean) {
+  deleteRecord(id: string, event: boolean): void {
     if(event) {
       let index = this.records.findIndex(x => x.id == id);
       this.records.splice(index, 1);
     }
   }
+
 }

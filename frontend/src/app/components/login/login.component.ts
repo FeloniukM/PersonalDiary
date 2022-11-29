@@ -4,7 +4,6 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { UserLoginModel } from 'src/app/models/auth/user-login-model';
-import { Captcha } from 'src/app/models/image/captcha';
 import { AuthenticationService } from 'src/app/services/auth.service';
 import { CaptchaService } from 'src/app/services/captcha.service';
 
@@ -17,22 +16,25 @@ export class LoginComponent implements OnInit, OnDestroy {
   public loginForm: FormGroup;
   public emailControl: FormControl;
   public passwordControl: FormControl;
+
   public captcha: any;
   public captchaAnswer: number;
   public hide: boolean = true;
+  public hideCaptcha: boolean = false;
 
   public userLoginModel: UserLoginModel = { email: "", password: ""};
-  
   private unsubscribe$ = new Subject<void>();
 
   constructor(private authService: AuthenticationService, 
     private router: Router,
     private captchaService: CaptchaService,
     private sanitizer: DomSanitizer
-    ) { }
+  ) { }
 
   ngOnInit(): void {
-    this.captchaService.getCaptcha().subscribe((data) => {
+    this.captchaService.getCaptcha()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data) => {
       if(data.body) {
         this.captcha = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
         + data.body.fileContents);
@@ -61,8 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public signIn(): void {
     if(this.loginForm.valid) {
-      this.authService
-        .login({ 
+      this.authService.login({ 
           email: this.loginForm.get('emailControl')?.value, 
           password: this.loginForm.get('passwordControl')?.value 
         })
@@ -74,9 +75,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
-  public verifyCaptcha() {  
-    this.captchaService.verifyCaptcha(this.captchaAnswer).subscribe((data) => {
-      
+  public verifyCaptcha(): void {  
+    this.captchaService.verifyCaptcha(this.captchaAnswer)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data) => {
+      if(data.body) {
+        this.hideCaptcha = true;
+      } 
     });
   }
 

@@ -9,6 +9,7 @@ namespace PersonalDiary.WebAPI
     public class Startup
     {
         public IConfiguration Configuration { get; set; }
+        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public Startup(IConfiguration configuration)
         {
@@ -23,6 +24,7 @@ namespace PersonalDiary.WebAPI
             services.AddCustomService(Configuration);
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.Configure<ImageStorageOptions>(Configuration.GetSection("ImageStorageOptions"));
+            services.AddMemoryCache();
             services.AddDistributedSqlServerCache(options =>
             {
                 options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -32,6 +34,7 @@ namespace PersonalDiary.WebAPI
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
             });
@@ -39,7 +42,16 @@ namespace PersonalDiary.WebAPI
             services.ConfigureJwt(Configuration);
             services.AddAutoMapper();
             services.AddFluentValidation();
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins, policy =>
+                {
+                    policy.WithOrigins("https://localhost:4200", "http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
             services.AddEndpointsApiExplorer();
             services.AddSwagger();
         }
@@ -49,17 +61,13 @@ namespace PersonalDiary.WebAPI
         {
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-            app.UseCors(builder =>
-                builder
-                    .AllowAnyHeader()
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod());
 
             app.UseSwagger();
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();
             app.UseAuthorization();

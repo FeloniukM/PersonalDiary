@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using PersonalDiary.BLL.Exceptions;
 using PersonalDiary.BLL.Interfaces;
 using PersonalDiary.Common.DTO.Image;
@@ -8,6 +9,13 @@ namespace PersonalDiary.BLL.Service
 {
     public class CaptchaService : ICaptchaService
     {
+        private readonly IMemoryCache _cache;
+
+        public CaptchaService(IMemoryCache cache)
+        {
+            _cache = cache;
+        }
+
         public Captcha GetCaptcha(HttpContext httpContext)
         {
             string id = GenerateString(httpContext);
@@ -53,8 +61,7 @@ namespace PersonalDiary.BLL.Service
 
         public bool VerifyCapcha(HttpContext httpContext, int answer)
         {
-            var key = httpContext.Session.Keys.ToList();
-            var value = httpContext.Session.GetInt32("capcha");
+            var value = _cache.Get<int>($"captcha{httpContext.Connection.Id}");
 
             return answer == value;
         }
@@ -67,9 +74,14 @@ namespace PersonalDiary.BLL.Service
             int b = random.Next(1, 100);
 
             int res = a + b;
-        
-            httpContext.Session.SetInt32("capcha", res);
-            var key = httpContext.Session.Keys.ToList();
+
+            var cacheOption = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromSeconds(60))
+                .SetAbsoluteExpiration(TimeSpan.FromSeconds(1000))
+                .SetPriority(CacheItemPriority.Normal)
+                .SetSize(1024);
+
+            _cache.Set($"captcha{httpContext.Connection.Id}", res, cacheOption);
 
             return $"{a}+{b}";
         }

@@ -18,6 +18,7 @@ export class RegisterComponent implements OnInit {
   public emailControl: FormControl;
   public passwordControl: FormControl;
   public hide: boolean = true;
+  public hideCaptcha: boolean = false;
   public captcha: any;
   public captchaAnswer: number;
 
@@ -29,8 +30,8 @@ export class RegisterComponent implements OnInit {
     private authService: AuthenticationService, 
     private router: Router,
     private captchaService: CaptchaService,
-    private sanitizer: DomSanitizer) {
-  }
+    private sanitizer: DomSanitizer
+  ) { }
 
   ngOnInit(): void {
     this.captchaService.getCaptcha().subscribe((data) => {
@@ -79,9 +80,13 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  public verifyCaptcha() {  
-    this.captchaService.verifyCaptcha(this.captchaAnswer).subscribe((data) => {
-      
+  public verifyCaptcha(): void {  
+    this.captchaService.verifyCaptcha(this.captchaAnswer)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data) => {
+      if(data.body) {
+        this.hideCaptcha = true;
+      }
     });
   }
 

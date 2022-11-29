@@ -26,9 +26,9 @@
           Password is <strong>required</strong>
         </mat-error>
       </mat-form-field>
-      <button mat-flat-button color="primary">Login</button>
+      <button [ngClass]="{'disable-click': !hideCaptcha}" mat-flat-button color="primary">Login</button>
     </form>
-    <div class="captcha">
+    <div class="captcha" [ngClass]="{'visibility': hideCaptcha}">
       <img [src]="captcha" />
       <mat-form-field appearance="legacy">
         <mat-label>Answer captcha</mat-label>

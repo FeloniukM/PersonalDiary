@@ -31,7 +31,7 @@ namespace PersonalDiary.BLL.Service
             var record = _mapper.Map<Record>(recordCreateDTO);
             record.AuthorId = authorId;
 
-            if(recordCreateDTO.Image != null)
+            if (recordCreateDTO.Image != null)
             {
                 var image = await _uploadService.UploadImage(recordCreateDTO.Image);
 
@@ -74,7 +74,7 @@ namespace PersonalDiary.BLL.Service
         {
             var record = await _recordRepository.GetByKeyAsync(recordId);
 
-            if(record.CreatedAt < DateTime.Now.AddDays(-2))
+            if (record.CreatedAt < DateTime.Now.AddDays(-2))
             {
                 throw new HttpException(System.Net.HttpStatusCode.BadRequest, "A user cannot delete a record after two days of creation");
             }
