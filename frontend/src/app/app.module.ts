@@ -34,7 +34,6 @@ import { DatePipe } from '@angular/common';
     BrowserAnimationsModule,
     MaterialComponentsModule,
     HttpClientModule,
-    
   ],
   providers: [
     { 

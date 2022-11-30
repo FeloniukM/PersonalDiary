@@ -41,7 +41,7 @@ namespace PersonalDiary.BLL.Service
         {
             var user = await _userRepository.GetByKeyAsync(adminId);
 
-            if (user != null && user.IsAdmin == true)
+            if (user == null || user.IsAdmin == false)
             {
                 throw new HttpException(System.Net.HttpStatusCode.NotFound, "User not found or not permission");
             }
