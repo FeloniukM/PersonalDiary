@@ -27,6 +27,7 @@
 
 .remove {
     padding-left: 15px;
+    cursor: pointer;
 }
 
 .hidden {
